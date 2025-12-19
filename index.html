@@ -12,114 +12,327 @@
 
       gtag('config', 'G-CZPPP4ED1B');
     </script>
-    <title>Harmonic Blues Fusion - Dance Community</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Harmonic Blues Fusion - Coming January 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #000000;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1a6;
+            --text-tertiary: #6e6e73;
+            --accent: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo Section */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        .logo-section img {
+            max-width: 120px;
+            height: auto;
+            opacity: 0.95;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-section img:hover {
+            opacity: 1;
+        }
+
+        .logo-section h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(
+                90deg,
+                #ffffff 0%,
+                #ffffff 40%,
+                rgba(255, 255, 255, 0.4) 50%,
+                #ffffff 60%,
+                #ffffff 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 10s ease-in-out infinite, twinkle 30s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 93%, 100% {
+                text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+                filter: brightness(1);
+            }
+            95% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+                filter: brightness(1.2);
+            }
+            96.5% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.2);
+                filter: brightness(1.4);
+            }
+            98% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+                filter: brightness(1.2);
+            }
+            99% {
+                text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+                filter: brightness(1);
+            }
+        }
+
+        /* Announcement Badge */
+        .announcement-badge {
+            display: inline-block;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+
+        /* Main Announcement */
+        .announcement {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .announcement p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        /* Email Signup Section */
+        .signup-section {
+            background: var(--bg-secondary);
+            border-radius: 18px;
+            padding: 2.5rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            animation: fadeIn 1s ease-out 0.8s both;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .signup-section:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .signup-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .signup-header p {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+        }
+
+        .signup-form-wrapper {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Contribution CTA */
+        .contribution-cta {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            animation: fadeIn 1s ease-out 1s both;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .contribution-cta:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .contribution-cta p {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .contribution-cta a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            transition: border-color 0.3s ease;
+        }
+
+        .contribution-cta a:hover {
+            border-bottom-color: var(--text-primary);
+        }
+
+        /* Email form styling */
+        .signup-form-wrapper iframe,
+        .signup-form-wrapper form {
+            width: 100%;
+        }
+
+        /* Responsive Design - Mobile First */
+        @media (min-width: 640px) {
+            .container {
+                padding: 4rem 2rem;
+            }
+
+            .logo-section img {
+                max-width: 140px;
+            }
+
+            .logo-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .announcement p {
+                font-size: 1.25rem;
+            }
+
+            .signup-section {
+                padding: 3rem 2.5rem;
+            }
+
+            .signup-header h3 {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 5rem 2rem;
+            }
+
+            .logo-section {
+                margin-bottom: 4rem;
+            }
+
+            .announcement {
+                margin-bottom: 4rem;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Selection color */
+        ::selection {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <h1>Harmonic Blues Fusion</h1>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#events">Events</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h2>Welcome to Harmonic Blues Fusion</h2>
-                <p class="hero-subtitle">A vibrant dance community celebrating the art of blues fusion</p>
-                <div class="hero-buttons">
-                    <a href="#subscribe" class="btn btn-primary">Join Our Community</a>
-                    <a href="#contact" class="btn btn-secondary">Get in Touch</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="section">
-            <div class="container">
-                <h2>About Harmonic Blues Fusion</h2>
-                <p class="lead">
-                    Harmonic Blues Fusion is a welcoming dance community dedicated to the beautiful art of blues fusion dancing. 
-                    We bring together dancers of all levels to share, learn, and celebrate the connection, musicality, and expression 
-                    that makes blues fusion so special.
-                </p>
-                <div class="features">
-                    <div class="feature-card">
-                        <h3>Community</h3>
-                        <p>Join a supportive network of dancers passionate about blues fusion</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Events</h3>
-                        <p>Regular workshops, social dances, and special events</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Connection</h3>
-                        <p>Experience the deep connection and musicality of blues fusion</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="events" class="section section-alt">
-            <div class="container">
-                <h2>Upcoming Events</h2>
-                <p class="lead">Stay tuned for our upcoming workshops and social dances. Join our mailing list to be the first to know!</p>
-            </div>
-        </section>
-
-        <section id="subscribe" class="section">
-            <div class="container">
-                <h2>Stay Connected</h2>
-                <p class="lead">Subscribe to our newsletter to receive updates about events, workshops, and community news.</p>
-                <div class="subscription-form">
-                    <script async src="https://eomail5.com/form/90611636-dc70-11f0-b521-c3c318523581.js" data-form="90611636-dc70-11f0-b521-c3c318523581"></script>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="section section-alt">
-            <div class="container">
-                <h2>Contact Us</h2>
-                <p class="lead">Have questions or want to get involved? We'd love to hear from you!</p>
-                <div class="contact-section">
-                    <div class="contact-info">
-                        <p><strong>Email:</strong> <a href="mailto:harmonicfusiondance@gmail.com">harmonicfusiondance@gmail.com</a></p>
-                    </div>
-                    <div class="contact-form-container">
-                        <form id="contactForm" class="contact-form">
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Message</label>
-                                <textarea id="message" name="message" rows="5" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Send Message</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Harmonic Blues Fusion. All rights reserved.</p>
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <img src="logo.png" alt="Harmonic Blues Fusion Logo"><br>
+            <h1>Harmonic Blues Fusion</h1>
+            <p style="text-transform: uppercase; font-size: 0.875rem; color: var(--text-secondary);">Eugene, Oregon</p>
         </div>
-    </footer>
 
-    <script src="script.js"></script>
+        <!-- Announcement Badge -->
+        <div style="text-align: center;">
+            <span class="announcement-badge">Coming January 2026!</span>
+        </div>
+
+        <!-- Main Announcement -->
+        <div class="announcement">
+            <p>Blues Nook will be continuing as <span class="logo-section">Harmonic Blues Fusion</span> every Thursday at the Veteran's Memorial Club.</p>
+        </div>
+
+        <!-- Email Signup Section -->
+        <div class="signup-section">
+            <div class="signup-header">
+                <h3>Never miss a dance…</h3>
+            </div>
+            <div class="signup-form-wrapper">
+                <script async src="https://eomail5.com/form/90611636-dc70-11f0-b521-c3c318523581.js" data-form="90611636-dc70-11f0-b521-c3c318523581"></script>
+            </div>
+        </div>
+
+        <!-- Contribution CTA -->
+        <div class="contribution-cta">
+            <p>Want to help keep the scene going?<br>Email <a href="mailto:harmonicfusiondance@gmail.com">harmonicfusiondance@gmail.com</a> to say more.</p>
+        </div>
+    </div>
 </body>
 </html>
-
