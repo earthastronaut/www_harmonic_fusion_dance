@@ -3,7 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    
+    <!-- Legacy ICO favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- PNG favicons with explicit sizes - Dark (default) -->
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/dark/icon-16.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/dark/icon-32.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="64x64" href="icons/dark/icon-64.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/dark/icon-96.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/dark/icon-128.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="256x256" href="icons/dark/icon-256.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/dark/icon-512.png" media="(prefers-color-scheme: dark)">
+    
+    <!-- PNG favicons with explicit sizes - Light -->
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/light/icon-16.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/light/icon-32.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="64x64" href="icons/light/icon-64.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/light/icon-96.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/light/icon-128.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="256x256" href="icons/light/icon-256.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/light/icon-512.png" media="(prefers-color-scheme: light)">
+    
+    <!-- Fallback to dark if no preference detected -->
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/dark/icon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/dark/icon-32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="icons/dark/icon-64.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/dark/icon-96.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/dark/icon-128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="icons/dark/icon-256.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/dark/icon-512.png">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/dark/icon-256.png">
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/dark/icon-256.png">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Dynamic Favicon Switching for Light/Dark Mode (enhances static links) -->
+    <script>
+      (function() {
+        function updateFavicon() {
+          // Detect color scheme preference, default to dark
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+          const isDark = prefersDark || (!prefersLight && !prefersDark); // Default to dark
+          
+          const sizes = [16, 32, 64, 96, 128, 256, 512];
+          const theme = isDark ? 'dark' : 'light';
+          
+          // Update or create favicon links
+          sizes.forEach(size => {
+            const selector = `link[rel="icon"][sizes="${size}x${size}"]`;
+            let link = document.querySelector(selector);
+            
+            if (!link) {
+              link = document.createElement('link');
+              link.rel = 'icon';
+              link.type = 'image/png';
+              link.sizes = size + 'x' + size;
+              document.head.appendChild(link);
+            }
+            
+            link.href = `icons/${theme}/icon-${size}.png`;
+          });
+        }
+        
+        // Set initial favicon (runs after DOM is ready)
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', updateFavicon);
+        } else {
+          updateFavicon();
+        }
+        
+        // Listen for color scheme changes
+        const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const lightQuery = window.matchMedia('(prefers-color-scheme: light)');
+        if (darkQuery.addEventListener) {
+          darkQuery.addEventListener('change', updateFavicon);
+          lightQuery.addEventListener('change', updateFavicon);
+        } else {
+          // Fallback for older browsers
+          darkQuery.addListener(updateFavicon);
+          lightQuery.addListener(updateFavicon);
+        }
+      })();
+    </script>
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZPPP4ED1B"></script>
     <script>
@@ -300,6 +389,36 @@
             background: rgba(255, 255, 255, 0.2);
         }
     </style>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Harmonic Blues Fusion",
+      "description": "Blues Nook continuing as Harmonic Blues Fusion every Thursday at the Veteran's Memorial Club in Eugene, Oregon",
+      "url": "https://harmonicfusiondance.github.io",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://harmonicfusiondance.github.io/icons/dark/icon-256.png",
+        "width": 256,
+        "height": 256
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://harmonicfusiondance.github.io/icons/dark/icon-512.png",
+        "width": 512,
+        "height": 512
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Eugene",
+        "addressRegion": "Oregon",
+        "addressCountry": "US"
+      },
+      "email": "harmonicfusiondance@gmail.com"
+    }
+    </script>
 </head>
 <body>
     <div class="container">
