@@ -388,6 +388,332 @@
         ::selection {
             background: rgba(255, 255, 255, 0.2);
         }
+
+        /* Calendar Section */
+        .calendar-section {
+            background: var(--bg-secondary);
+            border-radius: 18px;
+            padding: 2rem 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            animation: fadeIn 1s ease-out 1.2s both;
+        }
+
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-header h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .calendar-subtitle {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+        }
+
+        /* Date Range Selector */
+        .date-range-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .date-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .date-input-group label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .date-input-group input {
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .date-input-group input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 3rem;
+            display: none;
+        }
+
+        .loading-state.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--text-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-state p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Events Container */
+        .events-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 1200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar for events container */
+        .events-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .events-container::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .events-container::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .events-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .event-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .event-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .event-date {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .event-time {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-location {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .event-location::before {
+            content: "📍";
+            font-size: 0.875rem;
+        }
+
+        .location-link {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        .location-link:hover {
+            color: var(--text-secondary);
+            border-bottom-color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .event-modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 0;
+            max-width: 600px;
+            width: 90%;
+            color: var(--text-primary);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+        }
+
+        .event-modal::backdrop {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            padding: 2rem;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-right: 2rem;
+        }
+
+        .modal-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .modal-detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .modal-detail-item.modal-description {
+            margin-top: 0.5rem;
+        }
+
+        .modal-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .modal-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .modal-value .location-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .modal-value .location-link:hover {
+            color: var(--text-secondary);
+            border-bottom-color: var(--text-secondary);
+        }
+
+        .modal-description .modal-value {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+        }
+
+        /* Responsive Design for Calendar */
+        @media (max-width: 640px) {
+            .date-range-selector {
+                flex-direction: column;
+            }
+
+            .date-input-group {
+                min-width: 100%;
+            }
+
+            .event-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
     </style>
     
     <!-- JSON-LD Structured Data -->
@@ -431,18 +757,73 @@
 
         <!-- Main Announcement -->
         <div class="announcement">
-            <p>Blues Nook will be continuing as Harmonic Blues Fusion every Thursday at the Veteran's Memorial Club.</p>
+            <p style="padding-bottom: 2rem;">Our mission is to nurture a vibrant community who dance, play, connect, care, and love. We create harmony between differences and enrich the fusion dance scene in Eugene through joyful, heart-led gatherings.
+            </p>
+
+            <p>Hosting weekly dances on Thursday's at the Veteran's Memorial Club.</p>
         </div>
 
-        <!-- Announcement Badge -->
-        <div style="text-align: center;">
-            <span class="announcement-badge">Coming January 2026!</span>
+        <!-- Calendar Events Section -->
+        <div class="calendar-section">
+            <div class="calendar-header">
+                <h2>Upcoming Events</h2>
+            </div>
+
+            <!-- Date Range Selector -->
+            <div class="date-range-selector">
+                <div class="date-input-group">
+                    <label for="month-selector">Month:</label>
+                    <input type="month" id="month-selector" />
+                </div>
+                <div class="date-input-group">
+                    <label for="start-date">Start Date:</label>
+                    <input type="date" id="start-date" />
+                </div>
+                <div class="date-input-group">
+                    <label for="end-date">End Date:</label>
+                    <input type="date" id="end-date" />
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-state" id="loading-state">
+                <div class="spinner"></div>
+                <p>Loading events...</p>
+            </div>
+
+            <!-- Events List -->
+            <div class="events-container" id="events-container">
+                <!-- Events will be inserted here -->
+            </div>
+
         </div>
+
+        <!-- Event Details Modal -->
+        <dialog id="event-modal" class="event-modal">
+            <div class="modal-content">
+                <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+                <h3 id="modal-title" class="modal-title"></h3>
+                <div class="modal-details">
+                    <div class="modal-detail-item">
+                        <span class="modal-label">Time:</span>
+                        <span id="modal-time" class="modal-value"></span>
+                    </div>
+                    <div class="modal-detail-item">
+                        <span class="modal-label">Location:</span>
+                        <span id="modal-location" class="modal-value"></span>
+                    </div>
+                    <div class="modal-detail-item modal-description">
+                        <span class="modal-label">Description:</span>
+                        <div id="modal-description" class="modal-value"></div>
+                    </div>
+                </div>
+            </div>
+        </dialog>
 
         <!-- Email Signup Section -->
         <div class="signup-section">
             <div class="signup-header">
-                <h3>Never miss a dance…</h3>
+                <h2>Never miss a dance…</h2>
             </div>
             <div class="signup-form-wrapper">
                 <script async src="https://eomail5.com/form/90611636-dc70-11f0-b521-c3c318523581.js" data-form="90611636-dc70-11f0-b521-c3c318523581"></script>
@@ -451,8 +832,10 @@
 
         <!-- Contribution CTA -->
         <div class="contribution-cta">
-            <p>Want to help keep the scene going?<br>Email <a href="mailto:harmonicfusiondance@gmail.com">harmonicfusiondance@gmail.com</a> to say more.</p>
+            <p>Want to help keep the scene going?<br>Email <a href="mailto:harmonicfusiondance@gmail.com">harmonicfusiondance@gmail.com</a> to tell us more.</p>
         </div>
     </div>
+    <script src="script.js"></script>
+    <script src="calendar.js"></script>
 </body>
 </html>
