@@ -2,7 +2,7 @@
 const CALENDAR_ID = 'harmonicfusiondance@gmail.com';
 // Optional: Set API_KEY to use Google Calendar API v3 (expands recurring events automatically)
 // Leave empty to use iCal feed (requires manual RRULE expansion)
-const API_KEY = ''; // Set your Google Calendar API key here if you want to use API v3
+const API_KEY = 'AIzaSyDG6sIfQdFEPpGuGRupWNXkwRM5fGarY1w'; // Set your Google Calendar API key here if you want to use API v3
 
 // State
 let allEvents = [];
@@ -570,6 +570,10 @@ function parseRRULE(rruleString) {
 // Load events using Google Calendar API v3 (expands recurring events automatically)
 async function loadEventsFromAPI() {
     try {
+        // Show loading state
+        loadingState.classList.add('active');
+        eventsContainer.innerHTML = '';
+        
         // Get date range for filtering
         const startDate = startDateInput.value ? new Date(startDateInput.value) : new Date();
         const endDate = endDateInput.value ? new Date(endDateInput.value) : new Date();
@@ -591,7 +595,27 @@ async function loadEventsFromAPI() {
         const response = await fetch(apiUrl);
         
         if (!response.ok) {
-            throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+            // Get error details from response
+            let errorMessage = `API request failed: ${response.status} ${response.statusText}`;
+            try {
+                const errorData = await response.json();
+                if (errorData.error) {
+                    errorMessage += ` - ${errorData.error.message || JSON.stringify(errorData.error)}`;
+                }
+            } catch (e) {
+                // If we can't parse error JSON, use the status text
+            }
+            
+            // Provide specific guidance for 403 errors
+            if (response.status === 403) {
+                errorMessage += '\n\nTroubleshooting 403 Forbidden:\n' +
+                    '1. Ensure your Google Calendar is set to "Public" (Settings → Access permissions → Make available to public)\n' +
+                    '2. Check that the API key has "Google Calendar API" enabled\n' +
+                    '3. Verify API key restrictions allow your domain\n' +
+                    '4. Make sure billing is enabled in Google Cloud Console (free tier is sufficient)';
+            }
+            
+            throw new Error(errorMessage);
         }
         
         const data = await response.json();
@@ -613,24 +637,51 @@ async function loadEventsFromAPI() {
                 };
             });
             
-            // Sort all events by date
-            allEvents = events
+            // Sort events by date
+            const sortedEvents = events
                 .filter(event => event.start) // Only keep events with valid start dates
                 .sort((a, b) => a.start.getTime() - b.start.getTime());
-            console.log('Processed', allEvents.length, 'events from API');
-            applyFilter();
+            
+            // For API, we already have the filtered events (API does the filtering via timeMin/timeMax)
+            // So we can directly use these as filteredEvents
+            filteredEvents = sortedEvents;
+            allEvents = sortedEvents; // Also store in allEvents for consistency
+            
+            console.log('Processed', filteredEvents.length, 'events from API');
+            loadingState.classList.remove('active');
+            renderEvents();
         } else {
             allEvents = [];
+            filteredEvents = [];
             console.log('No events found in API response');
-            applyFilter();
+            loadingState.classList.remove('active');
+            renderEvents();
         }
     } catch (error) {
         console.error('Error loading events from API:', error);
+        
+        // Extract error message and format for display
+        let errorMsg = error.message;
+        const is403 = errorMsg.includes('403');
+        
         eventsContainer.innerHTML = `
             <div class="empty-state">
                 <p>Unable to load events from Google Calendar API.</p>
-                <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.7;">Error: ${error.message}</p>
-                <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.7;">Falling back to iCal feed...</p>
+                <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.7;">Error: ${escapeHtml(errorMsg.split('\n')[0])}</p>
+                ${is403 ? `
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px; text-align: left;">
+                        <p style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem;">Troubleshooting 403 Forbidden:</p>
+                        <ol style="font-size: 0.8125rem; opacity: 0.9; margin-left: 1.5rem; line-height: 1.6;">
+                            <li>Ensure your Google Calendar is set to <strong>"Public"</strong><br>
+                                (Settings → Access permissions → Make available to public)</li>
+                            <li>Check that the API key has <strong>"Google Calendar API"</strong> enabled</li>
+                            <li>Verify API key restrictions allow your domain</li>
+                            <li>Make sure <strong>billing is enabled</strong> in Google Cloud Console<br>
+                                (Free tier is sufficient, but billing must be enabled)</li>
+                        </ol>
+                    </div>
+                ` : ''}
+                <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.7;">Falling back to iCal feed...</p>
             </div>
         `;
         // Fallback to iCal feed
@@ -799,7 +850,7 @@ async function loadEventsFromICal() {
 }
 
 // Apply date filter
-function applyFilter() {
+async function applyFilter() {
     const startDate = startDateInput.value ? new Date(startDateInput.value) : null;
     const endDate = endDateInput.value ? new Date(endDateInput.value) : null;
     
@@ -809,6 +860,15 @@ function applyFilter() {
     }
     
     console.log('Applying filter - Start:', startDate, 'End:', endDate);
+    
+    // If using API, re-fetch from API with new date range instead of filtering
+    if (API_KEY) {
+        console.log('Using API - re-fetching events for new date range');
+        await loadEventsFromAPI();
+        return; // loadEventsFromAPI will handle rendering
+    }
+    
+    // For iCal feed, filter existing events
     filteredEvents = allEvents.filter(event => {
         if (startDate && event.start < startDate) return false;
         if (endDate && event.start > endDate) return false;
@@ -926,10 +986,165 @@ function showEventModal(event) {
     
     const description = event.description || 'No description available.';
     const descriptionEl = document.getElementById('modal-description');
-    // Render HTML content (description comes from Google Calendar, a trusted source)
-    descriptionEl.innerHTML = description;
+    // Clean and render HTML content (description comes from Google Calendar, a trusted source)
+    descriptionEl.innerHTML = cleanDescriptionHTML(description);
     
     eventModal.showModal();
+}
+
+
+// Clean description HTML - remove escape sequences, fix HTML entities, clean up formatting
+// 
+// Why Google Calendar adds strange characters:
+// 1. Google Calendar stores HTML in the description field, but when accessed via API,
+//    it may be double-encoded or have encoding issues (UTF-8 BOM, HTML entity encoding)
+// 2. When content is copied/pasted into Google Calendar, hidden formatting can introduce
+//    escape sequences and encoding artifacts
+// 3. The iCal standard expects plain text, but Google Calendar allows HTML, causing
+//    compatibility issues that manifest as escape sequences
+//
+// Solution: Use DOMParser to properly parse HTML (handles entity decoding automatically),
+// then process text nodes directly to fix remaining encoding issues and broken words.
+function cleanDescriptionHTML(html) {
+    if (!html) return html;
+    
+    // Step 1: Use DOMParser to properly parse HTML (handles encoding automatically)
+    // DOMParser will decode HTML entities correctly
+    let tempDiv;
+    try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        // Check for parsing errors (DOMParser adds error elements if parsing fails)
+        const parserError = doc.querySelector('parsererror');
+        if (parserError) {
+            // If parsing failed, try with a wrapper div
+            tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+        } else {
+            tempDiv = doc.body;
+            // If body is empty or only has error, fall back
+            if (!tempDiv || tempDiv.children.length === 0) {
+                tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+            }
+        }
+    } catch (e) {
+        // Fall back to innerHTML if DOMParser fails
+        tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+    }
+    
+    // Remove HTML comments
+    const walker = document.createTreeWalker(
+        tempDiv,
+        NodeFilter.SHOW_COMMENT,
+        null,
+        false
+    );
+    const comments = [];
+    let node;
+    while (node = walker.nextNode()) {
+        comments.push(node);
+    }
+    comments.forEach(comment => comment.remove());
+    
+    // Step 2: Process text nodes directly to fix encoding issues
+    // This ensures we only modify actual text content, not HTML structure
+    // DOMParser has already decoded HTML entities, so we focus on text content issues
+    
+    // Step 2: Process text nodes to fix encoding issues and broken words
+    // This ensures we only modify actual text content, not HTML structure
+    const textNodeWalker = document.createTreeWalker(
+        tempDiv,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+    );
+    
+    const textNodes = [];
+    let textNode;
+    while (textNode = textNodeWalker.nextNode()) {
+        textNodes.push(textNode);
+    }
+    
+    // Fix issues in text nodes
+    textNodes.forEach(node => {
+        let text = node.textContent;
+        const originalText = text;
+        
+        // Fix escape sequences that may appear in text content
+        // (DOMParser handles HTML entities, but not these escape sequences)
+        text = text
+            .replace(/\\,/g, ',')           // Escaped commas
+            .replace(/\\;/g, ';')            // Escaped semicolons
+            .replace(/\\!/g, '!')            // Escaped exclamation points
+            .replace(/\\&/g, '&')            // Escaped ampersands
+            .replace(/\\n/g, ' ')            // Escaped newlines (convert to space)
+            .replace(/\\N/g, ' ')            // Escaped newlines (uppercase)
+            .replace(/\\\\/g, '\\');         // Escaped backslashes
+        
+        // Fix encoding issues (like Â characters from UTF-8 encoding problems)
+        text = text
+            .replace(/Â/g, '')                // Remove stray Â characters
+            .replace(/\s+([,\.!?;:])/g, '$1')  // Remove space before punctuation
+            .replace(/\s{2,}/g, ' ');         // Multiple spaces to single space
+        
+        // Fix only the most obvious broken words (conservative approach)
+        // Only fix very common words that are clearly broken by single spaces
+        text = text
+            .replace(/\bt\s+o\b/gi, 'to')      // "t o" -> "to"
+            .replace(/\ba\s+nd\b/gi, 'and')    // "a nd" -> "and"
+            .replace(/\bc\s+o\s+m\s+e\b/gi, 'come')  // "c o m e" -> "come"
+            .replace(/\bb\s+o\s+t\s+h\b/gi, 'both'); // "b o t h" -> "both"
+        
+        // Update the text node if it changed
+        if (text !== originalText) {
+            node.textContent = text;
+        }
+    });
+    
+    // Get the cleaned HTML after text node processing
+    cleaned = tempDiv.innerHTML;
+    
+    // Add CSS classes to elements
+    const paragraphs = tempDiv.querySelectorAll('p');
+    paragraphs.forEach(p => {
+        p.classList.add('description-paragraph');
+    });
+    
+    const links = tempDiv.querySelectorAll('a');
+    links.forEach(a => {
+        a.classList.add('description-link');
+    });
+    
+    const boldElements = tempDiv.querySelectorAll('b, strong');
+    boldElements.forEach(b => {
+        b.classList.add('description-bold');
+    });
+    
+    const lists = tempDiv.querySelectorAll('ul, ol');
+    lists.forEach(list => {
+        list.classList.add('description-list');
+    });
+    
+    const listItems = tempDiv.querySelectorAll('li');
+    listItems.forEach(li => {
+        li.classList.add('description-list-item');
+    });
+    
+    // Clean up empty or broken tags
+    cleaned = tempDiv.innerHTML
+        .replace(/<p[^>]*>\s*<\/p>/g, '')           // Empty paragraphs
+        .replace(/<b[^>]*>\s*<\/b>/g, '')           // Empty bold tags
+        .replace(/<p[^>]*>\s*<p/g, '<p')            // Nested paragraphs
+        .replace(/<\/p>\s*<\/p>/g, '</p>')           // Double closing paragraphs
+        .replace(/<b[^>]*>\s*<b/g, '<b')             // Nested bold tags
+        .replace(/<\/b>\s*<\/b>/g, '</b>')            // Double closing bold tags
+        .replace(/<!--[^>]*-->/g, '')                // Remove any remaining comments
+        .replace(/<br\s*\/?>\s*<br\s*\/?>/g, '<br>'); // Multiple br tags to single
+    
+    return cleaned;
 }
 
 // Decode iCal escape sequences

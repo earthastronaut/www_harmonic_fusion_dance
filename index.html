@@ -422,7 +422,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-top: 2rem;
             padding: 1.5rem;
             background: var(--bg-tertiary);
             border-radius: 12px;
@@ -688,6 +688,50 @@
             word-wrap: break-word;
         }
 
+        /* Description Content Styling */
+        .modal-description .modal-value .description-paragraph {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .modal-description .modal-value .description-paragraph:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-description .modal-value .description-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .modal-description .modal-value .description-link:hover {
+            color: var(--text-secondary);
+            border-bottom-color: var(--text-secondary);
+        }
+
+        .modal-description .modal-value .description-link u {
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-description .modal-value .description-bold {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-description .modal-value .description-list {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .modal-description .modal-value .description-list-item {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -697,6 +741,39 @@
 
         .empty-state p {
             font-size: 1rem;
+        }
+
+        /* Add to Google Calendar Button */
+        .add-to-google-calendar {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-add-to-google-calendar {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-add-to-google-calendar:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .btn-add-to-google-calendar:active {
+            transform: translateY(0);
         }
 
         /* Responsive Design for Calendar */
@@ -769,6 +846,17 @@
                 <h2>Upcoming Events</h2>
             </div>
 
+            <!-- Loading State -->
+            <div class="loading-state" id="loading-state">
+                <div class="spinner"></div>
+                <p>Loading events...</p>
+            </div>
+
+            <!-- Events List -->
+            <div class="events-container" id="events-container">
+                <!-- Events will be inserted here -->
+            </div>
+
             <!-- Date Range Selector -->
             <div class="date-range-selector">
                 <div class="date-input-group">
@@ -785,15 +873,15 @@
                 </div>
             </div>
 
-            <!-- Loading State -->
-            <div class="loading-state" id="loading-state">
-                <div class="spinner"></div>
-                <p>Loading events...</p>
-            </div>
-
-            <!-- Events List -->
-            <div class="events-container" id="events-container">
-                <!-- Events will be inserted here -->
+            <!-- Add to Google Calendar Link -->
+            <div class="add-to-google-calendar">
+                <a href="https://calendar.google.com/calendar/u/0?cid=aGFybW9uaWNmdXNpb25kYW5jZUBnbWFpbC5jb20" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="btn-add-to-google-calendar" 
+                   id="add-to-google-calendar">
+                    Add to Google Calendar
+                </a>
             </div>
 
         </div>
