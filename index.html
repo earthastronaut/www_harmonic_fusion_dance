@@ -103,6 +103,8 @@
       gtag('config', 'G-CZPPP4ED1B');
     </script>
     <title>Harmonic Blues Fusion</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * {
             margin: 0;
@@ -403,6 +405,7 @@
         .calendar-header {
             text-align: center;
             margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
         }
 
         .calendar-header h2 {
@@ -747,14 +750,12 @@
         /* Add to Google Calendar Button */
         .add-to-google-calendar {
             text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
+            margin: 1rem;
         }
 
         .btn-add-to-google-calendar {
             display: inline-block;
-            padding: 1.5rem;
+            padding: 0.5rem 1.5rem;
             background: var(--accent);
             color: var(--text-accent);
             border: transparent;
