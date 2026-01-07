@@ -117,7 +117,8 @@
             --text-primary: #ffffff;
             --text-secondary: #a1a1a6;
             --text-tertiary: #6e6e73;
-            --accent: #ffffff;
+            --accent: #DF9535;
+            --text-accent: #ffffff;
             --border: rgba(255, 255, 255, 0.1);
         }
 
@@ -754,9 +755,9 @@
         .btn-add-to-google-calendar {
             display: inline-block;
             padding: 0.75rem 1.5rem;
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
+            background: var(--accent);
+            color: var(--text-accent);
+            border: transparent;
             border-radius: 8px;
             font-size: 0.9375rem;
             font-weight: 600;
@@ -846,6 +847,17 @@
                 <h2>Upcoming Events</h2>
             </div>
 
+            <!-- Add to Google Calendar Link -->
+            <div class="add-to-google-calendar">
+                <a href="https://calendar.google.com/calendar/u/0?cid=aGFybW9uaWNmdXNpb25kYW5jZUBnbWFpbC5jb20" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="btn-add-to-google-calendar" 
+                   id="add-to-google-calendar">
+                    Add to Google Calendar
+                </a>
+            </div>
+
             <!-- Loading State -->
             <div class="loading-state" id="loading-state">
                 <div class="spinner"></div>
@@ -872,18 +884,6 @@
                     <input type="date" id="end-date" />
                 </div>
             </div>
-
-            <!-- Add to Google Calendar Link -->
-            <div class="add-to-google-calendar">
-                <a href="https://calendar.google.com/calendar/u/0?cid=aGFybW9uaWNmdXNpb25kYW5jZUBnbWFpbC5jb20" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="btn-add-to-google-calendar" 
-                   id="add-to-google-calendar">
-                    Add to Google Calendar
-                </a>
-            </div>
-
         </div>
 
         <!-- Event Details Modal -->
