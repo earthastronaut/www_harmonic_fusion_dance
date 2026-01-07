@@ -164,6 +164,9 @@ def main():
     watcher_thread.start()
     
     # Start HTTP server
+    # Set allow_reuse_address to allow socket reuse
+    socketserver.TCPServer.allow_reuse_address = True
+    
     with socketserver.TCPServer(("", PORT), AutoRefreshHandler) as httpd:
         print(f"Server running at http://localhost:{PORT}/")
         print("Watching for changes in .html, .css, and .js files...")
