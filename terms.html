@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    
+    <!-- Legacy ICO favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- PNG favicons with explicit sizes - Dark (default) -->
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/dark/icon-16.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/dark/icon-32.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="64x64" href="icons/dark/icon-64.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/dark/icon-96.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/dark/icon-128.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="256x256" href="icons/dark/icon-256.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/dark/icon-512.png" media="(prefers-color-scheme: dark)">
+    
+    <!-- PNG favicons with explicit sizes - Light -->
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/light/icon-16.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/light/icon-32.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="64x64" href="icons/light/icon-64.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/light/icon-96.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/light/icon-128.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="256x256" href="icons/light/icon-256.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/light/icon-512.png" media="(prefers-color-scheme: light)">
+    
+    <!-- Fallback to dark if no preference detected -->
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/dark/icon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/dark/icon-32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="icons/dark/icon-64.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/dark/icon-96.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/dark/icon-128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="icons/dark/icon-256.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/dark/icon-512.png">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/dark/icon-256.png">
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/dark/icon-256.png">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <title>Terms & Liability - Harmonic Blues Fusion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #000000;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1a6;
+            --text-tertiary: #6e6e73;
+            --accent: #DF9535;
+            --text-accent: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            flex: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        .doc-container {
+            background: var(--bg-secondary);
+            border-radius: 18px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            min-height: 600px;
+        }
+
+        .doc-iframe {
+            width: 100%;
+            min-width: 600px;
+            height: 800px;
+            border: none;
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>Terms & Liability</h1>
+        </div>
+
+        <div class="doc-container">
+            <iframe 
+                class="doc-iframe"
+                src="https://docs.google.com/document/d/18me-mLgK3c0IRwtjqVypzJUh_ffcXS80-Ss0A69VOug/preview"
+                allow="autoplay"
+                title="Terms and Liability Form">
+            </iframe>
+        </div>
+    </div>
+</body>
+</html>
+
