@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="../icons/dark/icon-16.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icons/dark/icon-32.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="64x64" href="../icons/dark/icon-64.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="96x96" href="../icons/dark/icon-96.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="128x128" href="../icons/dark/icon-128.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="256x256" href="../icons/dark/icon-256.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="512x512" href="../icons/dark/icon-512.png" media="(prefers-color-scheme: dark)">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="../icons/light/icon-16.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icons/light/icon-32.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="64x64" href="../icons/light/icon-64.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="96x96" href="../icons/light/icon-96.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="128x128" href="../icons/light/icon-128.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="256x256" href="../icons/light/icon-256.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" sizes="512x512" href="../icons/light/icon-512.png" media="(prefers-color-scheme: light)">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="../icons/dark/icon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icons/dark/icon-32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="../icons/dark/icon-64.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../icons/dark/icon-96.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="../icons/dark/icon-128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="../icons/dark/icon-256.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../icons/dark/icon-512.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../icons/dark/icon-256.png">
+    <link rel="apple-touch-icon" sizes="256x256" href="../icons/dark/icon-256.png">
+    <link rel="manifest" href="../manifest.json">
+
+    <title>QR Generator</title>
+    <link rel="stylesheet" href="qr.css">
+</head>
+<body>
+    <div class="container">
+        <a href="../" class="back-link">← Back to Home</a>
+
+        <header class="header">
+            <h1>QR Generator</h1>
+            <p>Generate styled QR codes entirely in your browser. Content never leaves this page.</p>
+        </header>
+
+        <div class="layout">
+            <section class="panel" aria-labelledby="controls-heading">
+                <h2 id="controls-heading">Controls</h2>
+
+                <div class="field">
+                    <label for="qr-data">Content</label>
+                    <textarea id="qr-data" spellcheck="false" maxlength="2953" placeholder="https://example.com or any text">https://harmonicfusion.dance</textarea>
+                    <span class="hint" id="char-count">0 characters</span>
+                </div>
+
+                <div class="field">
+                    <div class="field-row">
+                        <label for="qr-size">Size (px)</label>
+                    </div>
+                    <div class="synced-controls">
+                        <input type="range" id="qr-size" min="128" max="1024" step="8" value="300">
+                        <input type="number" id="qr-size-number" min="128" max="1024" step="8" value="300" aria-label="Size in pixels">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="field-row">
+                        <label for="qr-margin">Margin</label>
+                    </div>
+                    <div class="synced-controls">
+                        <input type="range" id="qr-margin" min="0" max="80" step="1" value="10">
+                        <input type="number" id="qr-margin-number" min="0" max="80" step="1" value="10" aria-label="Margin">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="qr-error-correction">Error correction</label>
+                    <select id="qr-error-correction">
+                        <option value="L">L — Low (~7%)</option>
+                        <option value="M">M — Medium (~15%)</option>
+                        <option value="Q" selected>Q — Quartile (~25%)</option>
+                        <option value="H">H — High (~30%)</option>
+                    </select>
+                </div>
+
+                <div class="color-grid">
+                    <div class="field">
+                        <label for="qr-foreground">Foreground</label>
+                        <input type="color" id="qr-foreground" value="#000000">
+                    </div>
+                    <div class="field">
+                        <label for="qr-background">Background</label>
+                        <input type="color" id="qr-background" value="#ffffff">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="qr-dots-style">Module style</label>
+                    <select id="qr-dots-style">
+                        <option value="square" selected>Square</option>
+                        <option value="dots">Dots</option>
+                        <option value="rounded">Rounded</option>
+                        <option value="extra-rounded">Extra rounded</option>
+                        <option value="classy">Classy</option>
+                        <option value="classy-rounded">Classy rounded</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="qr-corner-square-style">Corner square style</label>
+                    <select id="qr-corner-square-style">
+                        <option value="square" selected>Square</option>
+                        <option value="dot">Dot</option>
+                        <option value="rounded">Rounded</option>
+                        <option value="extra-rounded">Extra rounded</option>
+                        <option value="dots">Dots</option>
+                        <option value="classy">Classy</option>
+                        <option value="classy-rounded">Classy rounded</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="qr-corner-dot-style">Corner dot style</label>
+                    <select id="qr-corner-dot-style">
+                        <option value="square" selected>Square</option>
+                        <option value="dot">Dot</option>
+                        <option value="rounded">Rounded</option>
+                        <option value="dots">Dots</option>
+                        <option value="classy">Classy</option>
+                        <option value="classy-rounded">Classy rounded</option>
+                        <option value="extra-rounded">Extra rounded</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="qr-download-format">Download format</label>
+                    <select id="qr-download-format">
+                        <option value="png" selected>PNG</option>
+                        <option value="svg">SVG</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="panel preview-panel" aria-labelledby="preview-heading">
+                <h2 id="preview-heading">Preview</h2>
+                <div class="preview-frame">
+                    <div id="qr-preview" aria-live="polite"></div>
+                </div>
+                <p class="status" id="qr-status" role="status" data-tone="ok">Ready</p>
+                <div class="actions">
+                    <button type="button" class="btn" id="download-btn">Download</button>
+                    <button type="button" class="btn btn-secondary" id="copy-data-btn">Copy content</button>
+                </div>
+            </section>
+        </div>
+
+        <p class="footer-note">Private utility page — not linked from the main site.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
+    <script src="qr.js"></script>
+</body>
+</html>
