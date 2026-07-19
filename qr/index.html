@@ -64,8 +64,8 @@
                         <label for="qr-size">Size (px)</label>
                     </div>
                     <div class="synced-controls">
-                        <input type="range" id="qr-size" min="128" max="1024" step="8" value="300">
-                        <input type="number" id="qr-size-number" min="128" max="1024" step="8" value="300" aria-label="Size in pixels">
+                        <input type="range" id="qr-size" min="128" max="1024" step="1" value="300">
+                        <input type="number" id="qr-size-number" min="128" max="1024" step="1" value="300" aria-label="Size in pixels">
                     </div>
                 </div>
 
@@ -136,6 +136,37 @@
                         <option value="classy-rounded">Classy rounded</option>
                         <option value="extra-rounded">Extra rounded</option>
                     </select>
+                </div>
+
+                <div class="field">
+                    <div class="field-row">
+                        <label for="qr-radius">Background corner radius (px)</label>
+                    </div>
+                    <div class="synced-controls">
+                        <input type="range" id="qr-radius" min="0" max="512" step="1" value="0">
+                        <input type="number" id="qr-radius-number" min="0" max="512" step="1" value="0" aria-label="Background corner radius in pixels">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="field-row">
+                        <label for="qr-logo-width">Logo space width (px)</label>
+                    </div>
+                    <div class="synced-controls">
+                        <input type="range" id="qr-logo-width" min="0" max="512" step="1" value="0">
+                        <input type="number" id="qr-logo-width-number" min="0" max="512" step="1" value="0" aria-label="Logo space width in pixels">
+                    </div>
+                    <span class="hint">Leave a blank centered area for a logo. Default is no space.</span>
+                </div>
+
+                <div class="field">
+                    <div class="field-row">
+                        <label for="qr-logo-height">Logo space height (px)</label>
+                    </div>
+                    <div class="synced-controls">
+                        <input type="range" id="qr-logo-height" min="0" max="512" step="1" value="0">
+                        <input type="number" id="qr-logo-height-number" min="0" max="512" step="1" value="0" aria-label="Logo space height in pixels">
+                    </div>
                 </div>
 
                 <div class="field">
