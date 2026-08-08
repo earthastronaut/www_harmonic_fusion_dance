@@ -39,6 +39,19 @@
     text-align: center;
 }
 
+.bio-photo {
+    margin: 0 auto 1.5rem;
+    max-width: 8rem;
+    width: 100%;
+}
+
+.bio-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
 .learning-section p {
     font-size: 1.0625rem;
     color: var(--text-secondary);
