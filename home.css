@@ -88,10 +88,89 @@
     margin: 0 auto;
 }
 
-.announcement .weekly {
-    margin-top: 1.5rem;
+.weekly {
+    text-align: center;
+    margin: 0 auto 2.5rem;
+    font-size: 1.125rem;
     color: var(--text-primary);
     font-weight: 500;
+    line-height: 1.6;
+    max-width: 540px;
+}
+
+/* Upcoming events list */
+.upcoming-section {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.upcoming-loading {
+    color: var(--text-tertiary);
+    font-size: 0.9375rem;
+    margin: 0.75rem 0;
+}
+
+.upcoming-loading[hidden] {
+    display: none;
+}
+
+.upcoming-list {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: left;
+}
+
+.upcoming-item {
+    padding: 1rem 1.125rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.upcoming-title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.upcoming-meta {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+}
+
+.upcoming-location {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin-top: 0.25rem;
+}
+
+.upcoming-empty {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 1rem;
+}
+
+.upcoming-empty a {
+    color: var(--accent);
+}
+
+.upcoming-more {
+    text-align: center;
+    margin-top: 1.25rem;
+}
+
+.upcoming-more a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.upcoming-more a:hover {
+    text-decoration: underline;
 }
 
 /* Carousel */
@@ -204,28 +283,6 @@
     margin: 0 auto 1.5rem;
 }
 
-.teaser-calendar {
-    padding: 1.25rem;
-    animation-delay: 0.7s;
-}
-
-.teaser-calendar p {
-    margin-bottom: 0.75rem;
-    font-size: 1rem;
-}
-
-.teaser-calendar a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 600;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s ease;
-}
-
-.teaser-calendar a:hover {
-    border-bottom-color: var(--accent);
-}
-
 .signup-section {
     background: var(--bg-secondary);
     border-radius: 18px;
@@ -260,10 +317,12 @@
 .contribution-cta {
     text-align: center;
     padding: 2rem 1.5rem;
-    background: var(--bg-secondary);
-    border-radius: 18px;
-    border: 1px solid var(--border);
+    margin-bottom: 1rem;
     animation: fadeIn 1s ease-out 1s both;
+}
+
+.contribution-cta .section-heading {
+    margin-bottom: 0.75rem;
 }
 
 .contribution-cta p {
