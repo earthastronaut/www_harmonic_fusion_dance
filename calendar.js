@@ -16,6 +16,9 @@ const loadingState = document.getElementById('loading-state');
 const eventsContainer = document.getElementById('events-container');
 const eventModal = document.getElementById('event-modal');
 const modalClose = document.getElementById('modal-close');
+const monthLabel = document.getElementById('month-label');
+const prevMonthBtn = document.getElementById('prev-month');
+const nextMonthBtn = document.getElementById('next-month');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -29,19 +32,10 @@ function initializeDateInputs() {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
-    
-    // Set month selector to current month
+
     monthSelector.value = `${year}-${month}`;
-    
-    // Set default start date to today
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    startDateInput.value = formatDateLocal(today);
-    
-    // Set default end date to 30 days from today
-    const futureDate = new Date(today);
-    futureDate.setDate(futureDate.getDate() + 30);
-    endDateInput.value = formatDateLocal(futureDate);
+    updateMonthLabel();
+    updateDateRangeFromMonth(false);
 }
 
 // Format date for date input
@@ -52,46 +46,73 @@ function formatDateLocal(date) {
     return `${year}-${month}-${day}`;
 }
 
+function updateMonthLabel() {
+    if (!monthLabel || !monthSelector.value) return;
+    const [year, month] = monthSelector.value.split('-').map(Number);
+    const labelDate = new Date(year, month - 1, 1);
+    monthLabel.textContent = labelDate.toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric'
+    });
+}
+
+function shiftMonth(delta) {
+    if (!monthSelector.value) return;
+    const [year, month] = monthSelector.value.split('-').map(Number);
+    const d = new Date(year, month - 1 + delta, 1);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    monthSelector.value = `${y}-${m}`;
+    updateDateRangeFromMonth(true);
+}
+
 // Setup event listeners
 function setupEventListeners() {
     modalClose.addEventListener('click', () => eventModal.close());
-    
-    // Close modal on backdrop click
+
     eventModal.addEventListener('click', (e) => {
         if (e.target === eventModal) {
             eventModal.close();
         }
     });
-    
-    // Close modal on Escape key
+
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && eventModal.open) {
             eventModal.close();
         }
     });
-    
-    // Auto-apply filter when date inputs change
-    startDateInput.addEventListener('change', applyFilter);
-    startDateInput.addEventListener('blur', applyFilter);
-    endDateInput.addEventListener('change', applyFilter);
-    endDateInput.addEventListener('blur', applyFilter);
-    
-    // Update start/end date when month changes
-    monthSelector.addEventListener('change', updateDateRangeFromMonth);
+
+    if (startDateInput) {
+        startDateInput.addEventListener('change', applyFilter);
+        startDateInput.addEventListener('blur', applyFilter);
+    }
+    if (endDateInput) {
+        endDateInput.addEventListener('change', applyFilter);
+        endDateInput.addEventListener('blur', applyFilter);
+    }
+
+    monthSelector.addEventListener('change', () => updateDateRangeFromMonth(true));
+
+    if (prevMonthBtn) prevMonthBtn.addEventListener('click', () => shiftMonth(-1));
+    if (nextMonthBtn) nextMonthBtn.addEventListener('click', () => shiftMonth(1));
 }
 
 // Update date range when month selector changes
-function updateDateRangeFromMonth() {
+function updateDateRangeFromMonth(shouldApply = true) {
     const monthValue = monthSelector.value;
     if (!monthValue) return;
-    
+
     const [year, month] = monthValue.split('-').map(Number);
     const startOfMonth = new Date(year, month - 1, 1);
     const endOfMonth = new Date(year, month, 0);
-    
+
     startDateInput.value = formatDateLocal(startOfMonth);
     endDateInput.value = formatDateLocal(endOfMonth);
-    applyFilter();
+    updateMonthLabel();
+
+    if (shouldApply) {
+        applyFilter();
+    }
 }
 
 // Load events from Google Calendar
@@ -879,23 +900,108 @@ async function applyFilter() {
     renderEvents();
 }
 
-// Render events
+// Render events as a month grid
 function renderEvents() {
-    if (filteredEvents.length === 0) {
+    if (!monthSelector.value) {
         eventsContainer.innerHTML = `
             <div class="empty-state">
-                <p>No events found for the selected date range.</p>
+                <p>Select a month to view events.</p>
             </div>
         `;
         return;
     }
-    
-    eventsContainer.innerHTML = filteredEvents.map(event => createEventCard(event)).join('');
-    
-    // Add click listeners to event cards
-    eventsContainer.querySelectorAll('.event-card').forEach((card, index) => {
-        card.addEventListener('click', () => showEventModal(filteredEvents[index]));
+
+    const [year, month] = monthSelector.value.split('-').map(Number);
+    const firstOfMonth = new Date(year, month - 1, 1);
+    const daysInMonth = new Date(year, month, 0).getDate();
+    // Sunday-start week (US)
+    const startWeekday = firstOfMonth.getDay();
+
+    const eventsByDay = {};
+    filteredEvents.forEach(event => {
+        if (!event.start) return;
+        const key = pacificDateKey(event.start);
+        if (!eventsByDay[key]) eventsByDay[key] = [];
+        eventsByDay[key].push(event);
     });
+
+    const todayKey = pacificDateKey(new Date());
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    let html = weekdays.map(d => `<div class="month-grid-weekday" role="columnheader">${d}</div>`).join('');
+
+    // Leading empty days from previous month
+    const prevMonthLastDay = new Date(year, month - 1, 0).getDate();
+    for (let i = 0; i < startWeekday; i++) {
+        const dayNum = prevMonthLastDay - startWeekday + 1 + i;
+        html += `<div class="month-day outside" aria-hidden="true"><span class="month-day-num">${dayNum}</span></div>`;
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const key = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayEvents = eventsByDay[key] || [];
+        const isToday = key === todayKey;
+        const classes = ['month-day'];
+        if (isToday) classes.push('today');
+        if (dayEvents.length) classes.push('has-events');
+
+        const eventButtons = dayEvents.map((event, idx) => {
+            const title = escapeHtml(event.summary || 'Untitled Event');
+            return `<button type="button" class="month-event" data-event-key="${key}" data-event-index="${idx}" title="${title}">${title}</button>`;
+        }).join('');
+
+        html += `
+            <div class="${classes.join(' ')}" data-day-key="${key}" role="gridcell">
+                <span class="month-day-num">${day}</span>
+                <div class="month-day-events">${eventButtons}</div>
+                <span class="month-event-dot" aria-hidden="true"></span>
+            </div>
+        `;
+    }
+
+    // Trailing days to complete the grid
+    const totalCells = startWeekday + daysInMonth;
+    const trailing = (7 - (totalCells % 7)) % 7;
+    for (let i = 1; i <= trailing; i++) {
+        html += `<div class="month-day outside" aria-hidden="true"><span class="month-day-num">${i}</span></div>`;
+    }
+
+    eventsContainer.innerHTML = html;
+
+    eventsContainer.querySelectorAll('.month-event').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const key = btn.getAttribute('data-event-key');
+            const idx = parseInt(btn.getAttribute('data-event-index'), 10);
+            const list = eventsByDay[key];
+            if (list && list[idx]) showEventModal(list[idx]);
+        });
+    });
+
+    // On narrow screens, tapping a day with events opens the first (or cycles via modal of first)
+    eventsContainer.querySelectorAll('.month-day.has-events').forEach(cell => {
+        cell.addEventListener('click', (e) => {
+            if (e.target.closest('.month-event')) return;
+            if (window.matchMedia('(max-width: 640px)').matches) {
+                const key = cell.getAttribute('data-day-key');
+                const list = eventsByDay[key];
+                if (list && list.length) showEventModal(list[0]);
+            }
+        });
+    });
+}
+
+function pacificDateKey(date) {
+    // YYYY-MM-DD in America/Los_Angeles
+    const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/Los_Angeles',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).formatToParts(date);
+    const y = parts.find(p => p.type === 'year').value;
+    const m = parts.find(p => p.type === 'month').value;
+    const d = parts.find(p => p.type === 'day').value;
+    return `${y}-${m}-${d}`;
 }
 
 // Create Google Maps URL from location
@@ -903,29 +1009,6 @@ function createMapsUrl(location) {
     if (!location || location === 'Location TBD') return null;
     const encodedLocation = encodeURIComponent(location);
     return `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
-}
-
-// Create event card HTML
-function createEventCard(event) {
-    const dateStr = formatEventDate(event.start);
-    const timeStr = formatEventTime(event.start, event.end);
-    const locationStr = decodeICalText(event.location) || 'Location TBD';
-    const mapsUrl = createMapsUrl(locationStr);
-    
-    const locationHtml = mapsUrl 
-        ? `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="location-link">${escapeHtml(locationStr)}</a>`
-        : escapeHtml(locationStr);
-    
-    return `
-        <div class="event-card">
-            <div class="event-header">
-                <h3 class="event-title">${escapeHtml(event.summary || 'Untitled Event')}</h3>
-                <span class="event-date">${dateStr}</span>
-            </div>
-            <div class="event-time">${timeStr}</div>
-            <div class="event-location">${locationHtml}</div>
-        </div>
-    `;
 }
 
 // Format event date

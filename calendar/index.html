@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Upcoming Harmonic Fusion events — calendar view for Eugene fusion dances and more.">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icons/dark/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../icons/dark/icon-256.png">
+    <link rel="manifest" href="../manifest.json">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZPPP4ED1B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CZPPP4ED1B');
+    </script>
+
+    <title>Calendar | Harmonic Fusion</title>
+    <link rel="stylesheet" href="../site.css">
+    <link rel="stylesheet" href="../calendar.css">
+</head>
+<body>
+    <nav class="site-nav" aria-label="Main">
+        <div class="site-nav-inner">
+            <a class="site-nav-brand" href="/">Harmonic Fusion</a>
+            <ul class="site-nav-links">
+                <li><a href="/">Eugene Blues Fusion</a></li>
+                <li><a href="/learning/">Learning</a></li>
+                <li><a href="/calendar/" class="active" aria-current="page">Calendar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="calendar-page-header">
+            <h1>Calendar</h1>
+            <p>Upcoming Harmonic Fusion events</p>
+        </header>
+
+        <div class="calendar-section">
+            <div class="add-to-google-calendar">
+                <a href="https://calendar.google.com/calendar/u/0?cid=aGFybW9uaWNmdXNpb25kYW5jZUBnbWFpbC5jb20"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn-add-to-google-calendar"
+                   id="add-to-google-calendar">
+                    Add to Google Calendar
+                </a>
+            </div>
+
+            <div class="calendar-toolbar">
+                <button type="button" class="calendar-nav-btn" id="prev-month" aria-label="Previous month">‹</button>
+                <div class="calendar-month-label" id="month-label" aria-live="polite"></div>
+                <button type="button" class="calendar-nav-btn" id="next-month" aria-label="Next month">›</button>
+            </div>
+
+            <!-- Hidden inputs kept for calendar.js date-range logic -->
+            <input type="month" id="month-selector" class="sr-only" tabindex="-1" aria-hidden="true">
+            <input type="date" id="start-date" class="sr-only" tabindex="-1" aria-hidden="true">
+            <input type="date" id="end-date" class="sr-only" tabindex="-1" aria-hidden="true">
+
+            <div class="loading-state" id="loading-state">
+                <div class="spinner"></div>
+                <p>Loading events...</p>
+            </div>
+
+            <div class="month-grid" id="events-container" role="grid" aria-label="Month calendar">
+                <!-- Filled by calendar.js -->
+            </div>
+        </div>
+
+        <dialog id="event-modal" class="event-modal">
+            <div class="modal-content">
+                <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+                <h3 id="modal-title" class="modal-title"></h3>
+                <div class="modal-details">
+                    <div class="modal-detail-item">
+                        <span class="modal-label">Time</span>
+                        <span id="modal-time" class="modal-value"></span>
+                    </div>
+                    <div class="modal-detail-item">
+                        <span class="modal-label">Location</span>
+                        <span id="modal-location" class="modal-value"></span>
+                    </div>
+                    <div class="modal-detail-item modal-description">
+                        <span class="modal-label">Description</span>
+                        <div id="modal-description" class="modal-value"></div>
+                    </div>
+                </div>
+            </div>
+        </dialog>
+
+        <div class="page-footer">
+            <a href="https://drive.google.com/drive/folders/1hsuSSYhc7H6Dixn3kC1UrrmSNY_CrHPQ">Downloads</a>
+            <span class="sep">|</span>
+            <a href="../terms.html">Terms &amp; Liability</a>
+        </div>
+    </div>
+
+    <script src="../calendar.js"></script>
+</body>
+</html>

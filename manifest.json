@@ -1,7 +1,7 @@
 {
-  "name": "Harmonic Blues Fusion",
+  "name": "Harmonic Fusion",
   "short_name": "Harmonic Fusion",
-  "description": "Blues Nook continuing as Harmonic Blues Fusion every Thursday at the Veteran's Memorial Club in Eugene, Oregon",
+  "description": "Weekly fusion dance in Eugene, Oregon, and teaching with Dylan — Harmonic Fusion every Thursday at the Veteran's Memorial Club",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
@@ -52,4 +52,3 @@
     }
   ]
 }
-

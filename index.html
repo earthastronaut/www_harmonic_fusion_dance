@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Harmonic Fusion — weekly fusion dance every Thursday in Eugene, Oregon. Lessons and teaching with Dylan.">
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    
-    <!-- Legacy ICO favicon -->
+
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    
-    <!-- PNG favicons with explicit sizes - Dark (default) -->
     <link rel="icon" type="image/png" sizes="16x16" href="icons/dark/icon-16.png" media="(prefers-color-scheme: dark)">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/dark/icon-32.png" media="(prefers-color-scheme: dark)">
     <link rel="icon" type="image/png" sizes="64x64" href="icons/dark/icon-64.png" media="(prefers-color-scheme: dark)">
@@ -17,8 +15,6 @@
     <link rel="icon" type="image/png" sizes="128x128" href="icons/dark/icon-128.png" media="(prefers-color-scheme: dark)">
     <link rel="icon" type="image/png" sizes="256x256" href="icons/dark/icon-256.png" media="(prefers-color-scheme: dark)">
     <link rel="icon" type="image/png" sizes="512x512" href="icons/dark/icon-512.png" media="(prefers-color-scheme: dark)">
-    
-    <!-- PNG favicons with explicit sizes - Light -->
     <link rel="icon" type="image/png" sizes="16x16" href="icons/light/icon-16.png" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/light/icon-32.png" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" sizes="64x64" href="icons/light/icon-64.png" media="(prefers-color-scheme: light)">
@@ -26,794 +22,35 @@
     <link rel="icon" type="image/png" sizes="128x128" href="icons/light/icon-128.png" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" sizes="256x256" href="icons/light/icon-256.png" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" sizes="512x512" href="icons/light/icon-512.png" media="(prefers-color-scheme: light)">
-    
-    <!-- Fallback to dark if no preference detected -->
     <link rel="icon" type="image/png" sizes="16x16" href="icons/dark/icon-16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/dark/icon-32.png">
-    <link rel="icon" type="image/png" sizes="64x64" href="icons/dark/icon-64.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="icons/dark/icon-96.png">
-    <link rel="icon" type="image/png" sizes="128x128" href="icons/dark/icon-128.png">
-    <link rel="icon" type="image/png" sizes="256x256" href="icons/dark/icon-256.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="icons/dark/icon-512.png">
-    
-    <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="icons/dark/icon-256.png">
-    <link rel="apple-touch-icon" sizes="256x256" href="icons/dark/icon-256.png">
-    
-    <!-- Web App Manifest -->
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Dynamic Favicon Switching for Light/Dark Mode (enhances static links) -->
-    <script>
-      (function() {
-        function updateFavicon() {
-          // Detect color scheme preference, default to dark
-          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-          const isDark = prefersDark || (!prefersLight && !prefersDark); // Default to dark
-          
-          const sizes = [16, 32, 64, 96, 128, 256, 512];
-          const theme = isDark ? 'dark' : 'light';
-          
-          // Update or create favicon links
-          sizes.forEach(size => {
-            const selector = `link[rel="icon"][sizes="${size}x${size}"]`;
-            let link = document.querySelector(selector);
-            
-            if (!link) {
-              link = document.createElement('link');
-              link.rel = 'icon';
-              link.type = 'image/png';
-              link.sizes = size + 'x' + size;
-              document.head.appendChild(link);
-            }
-            
-            link.href = `icons/${theme}/icon-${size}.png`;
-          });
-        }
-        
-        // Set initial favicon (runs after DOM is ready)
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', updateFavicon);
-        } else {
-          updateFavicon();
-        }
-        
-        // Listen for color scheme changes
-        const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const lightQuery = window.matchMedia('(prefers-color-scheme: light)');
-        if (darkQuery.addEventListener) {
-          darkQuery.addEventListener('change', updateFavicon);
-          lightQuery.addEventListener('change', updateFavicon);
-        } else {
-          // Fallback for older browsers
-          darkQuery.addListener(updateFavicon);
-          lightQuery.addListener(updateFavicon);
-        }
-      })();
-    </script>
-    
-    <!-- Google tag (gtag.js) -->
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZPPP4ED1B"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-CZPPP4ED1B');
     </script>
-    <title>Harmonic Blues Fusion</title>
-    <!-- Tailwind CSS -->
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        :root {
-            --bg-dark: #000000;
-            --bg-secondary: #1a1a1a;
-            --bg-tertiary: #2a2a2a;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1a6;
-            --text-tertiary: #6e6e73;
-            --accent: #DF9535;
-            --text-accent: #ffffff;
-            --border: rgba(255, 255, 255, 0.1);
-        }
+    <title>Harmonic Fusion</title>
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="home.css?v=2">
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.5;
-            color: var(--text-primary);
-            background: var(--bg-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .container {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 0rem 1.5rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            animation: fadeIn 1s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Logo Section */
-        .logo-section {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeIn 1s ease-out 0.2s both;
-        }
-
-        .logo-section img {
-            max-width: 120px;
-            height: auto;
-            opacity: 0.95;
-            transition: opacity 0.3s ease;
-        }
-
-        .logo-section img:hover {
-            opacity: 1;
-        }
-
-        .logo-section h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            position: relative;
-            display: inline-block;
-            background: linear-gradient(
-                90deg,
-                #ffffff 0%,
-                #ffffff 40%,
-                rgba(255, 255, 255, 0.4) 50%,
-                #ffffff 60%,
-                #ffffff 100%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 10s ease-in-out infinite, twinkle 30s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
-        }
-
-        @keyframes twinkle {
-            0%, 93%, 100% {
-                text-shadow: 0 0 0 rgba(255, 255, 255, 0);
-                filter: brightness(1);
-            }
-            95% {
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
-                filter: brightness(1.2);
-            }
-            96.5% {
-                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.2);
-                filter: brightness(1.4);
-            }
-            98% {
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
-                filter: brightness(1.2);
-            }
-            99% {
-                text-shadow: 0 0 0 rgba(255, 255, 255, 0);
-                filter: brightness(1);
-            }
-        }
-
-        /* Announcement Badge */
-        .announcement-badge {
-            display: inline-block;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border);
-            animation: fadeIn 1s ease-out 0.4s both;
-        }
-
-        /* Main Announcement */
-        .announcement {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeIn 1s ease-out 0.6s both;
-        }
-
-        .announcement p {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            max-width: 540px;
-            margin: 0 auto;
-        }
-
-        /* Email Signup Section */
-        .signup-section {
-            background: var(--bg-secondary);
-            border-radius: 18px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border);
-            animation: fadeIn 1s ease-out 0.8s both;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .signup-section:hover {
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .signup-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .signup-header h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.01em;
-        }
-
-        .signup-header p {
-            font-size: 0.9375rem;
-            color: var(--text-secondary);
-        }
-
-        .signup-form-wrapper {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-
-        /* Contribution CTA */
-        .contribution-cta {
-            text-align: center;
-            padding: 2rem 1.5rem;
-            background: var(--bg-secondary);
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            animation: fadeIn 1s ease-out 1s both;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .contribution-cta:hover {
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .contribution-cta p {
-            font-size: 0.9375rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        .contribution-cta a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 500;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            transition: border-color 0.3s ease;
-        }
-
-        .contribution-cta a:hover {
-            border-bottom-color: var(--text-primary);
-        }
-
-        /* Email form styling */
-        .signup-form-wrapper iframe,
-        .signup-form-wrapper form {
-            width: 100%;
-        }
-
-        /* Responsive Design - Mobile First */
-        @media (min-width: 640px) {
-            .container {
-                padding: 0rem 2rem;
-            }
-
-            .logo-section img {
-                max-width: 140px;
-            }
-
-            .logo-section h1 {
-                font-size: 2.5rem;
-            }
-
-            .announcement p {
-                font-size: 1.25rem;
-            }
-
-            .signup-section {
-                padding: 3rem 2.5rem;
-            }
-
-            .signup-header h3 {
-                font-size: 1.75rem;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                padding: 0rem 2rem;
-            }
-
-            .logo-section {
-                margin-bottom: 4rem;
-            }
-
-            .announcement {
-                margin-bottom: 4rem;
-            }
-        }
-
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Selection color */
-        ::selection {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Calendar Section */
-        .calendar-section {
-            background: var(--bg-secondary);
-            border-radius: 18px;
-            padding: 2rem 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border);
-            animation: fadeIn 1s ease-out 1.2s both;
-        }
-
-        .calendar-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .calendar-header h2 {
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.01em;
-        }
-
-        .calendar-subtitle {
-            font-size: 0.9375rem;
-            color: var(--text-secondary);
-        }
-
-        /* Date Range Selector */
-        .date-range-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: var(--bg-tertiary);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .date-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .date-input-group label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .date-input-group input {
-            padding: 0.75rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.9375rem;
-            font-family: inherit;
-            transition: border-color 0.3s ease;
-        }
-
-        .date-input-group input:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Loading State */
-        .loading-state {
-            text-align: center;
-            padding: 3rem;
-            display: none;
-        }
-
-        .loading-state.active {
-            display: block;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--text-primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-state p {
-            color: var(--text-secondary);
-            font-size: 0.9375rem;
-        }
-
-        /* Events Container */
-        .events-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            max-height: 1200px;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        /* Custom scrollbar for events container */
-        .events-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .events-container::-webkit-scrollbar-track {
-            background: var(--bg-tertiary);
-            border-radius: 4px;
-        }
-
-        .events-container::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-
-        .events-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .event-card {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .event-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .event-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .event-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            flex: 1;
-        }
-
-        .event-date {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            white-space: nowrap;
-        }
-
-        .event-time {
-            font-size: 0.9375rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .event-location {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .event-location::before {
-            content: "📍";
-            font-size: 0.875rem;
-        }
-
-        .location-link {
-            color: var(--text-tertiary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            border-bottom: 1px solid transparent;
-        }
-
-        .location-link:hover {
-            color: var(--text-secondary);
-            border-bottom-color: var(--text-secondary);
-        }
-
-        /* Modal */
-        .event-modal {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 0;
-            max-width: 600px;
-            width: 90%;
-            color: var(--text-primary);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0;
-        }
-
-        .event-modal::backdrop {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-content {
-            padding: 2rem;
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 2rem;
-            cursor: pointer;
-            width: 2.5rem;
-            height: 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.3s ease;
-        }
-
-        .modal-close:hover {
-            background: var(--bg-tertiary);
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            padding-right: 2rem;
-        }
-
-        .modal-details {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .modal-detail-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .modal-detail-item.modal-description {
-            margin-top: 0.5rem;
-        }
-
-        .modal-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .modal-value {
-            font-size: 1rem;
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        .modal-value .location-link {
-            color: var(--text-primary);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            transition: border-color 0.3s ease, color 0.3s ease;
-        }
-
-        .modal-value .location-link:hover {
-            color: var(--text-secondary);
-            border-bottom-color: var(--text-secondary);
-        }
-
-        .modal-description .modal-value {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        /* Description Content Styling */
-        .modal-description .modal-value .description-paragraph {
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        .modal-description .modal-value .description-paragraph:last-child {
-            margin-bottom: 0;
-        }
-
-        .modal-description .modal-value .description-link {
-            color: var(--text-primary);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            transition: border-color 0.3s ease, color 0.3s ease;
-        }
-
-        .modal-description .modal-value .description-link:hover {
-            color: var(--text-secondary);
-            border-bottom-color: var(--text-secondary);
-        }
-
-        .modal-description .modal-value .description-link u {
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .modal-description .modal-value .description-bold {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .modal-description .modal-value .description-list {
-            margin: 1rem 0;
-            padding-left: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        .modal-description .modal-value .description-list-item {
-            margin-bottom: 0.5rem;
-            line-height: 1.6;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-secondary);
-        }
-
-        .empty-state p {
-            font-size: 1rem;
-        }
-
-        /* Add to Google Calendar Button */
-        .add-to-google-calendar {
-            text-align: center;
-            margin: 1rem;
-        }
-
-        .btn-add-to-google-calendar {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            background: var(--accent);
-            color: var(--text-accent);
-            border: transparent;
-            border-radius: 8px;
-            font-size: 0.9375rem;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .btn-add-to-google-calendar:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-1px);
-        }
-
-        .btn-add-to-google-calendar:active {
-            transform: translateY(0);
-        }
-
-        /* Responsive Design for Calendar */
-        @media (max-width: 640px) {
-            .date-range-selector {
-                flex-direction: column;
-            }
-
-            .date-input-group {
-                min-width: 100%;
-            }
-
-            .event-header {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-    </style>
-    
-    <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Harmonic Blues Fusion",
-      "description": "Blues Nook continuing as Harmonic Blues Fusion every Thursday at the Veteran's Memorial Club in Eugene, Oregon",
-      "url": "https://harmonicfusiondance.github.io",
+      "name": "Harmonic Fusion",
+      "description": "Weekly fusion dance every Thursday at the Veteran's Memorial Club in Eugene, Oregon",
+      "url": "https://harmonicfusion.dance",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://harmonicfusiondance.github.io/icons/dark/icon-256.png",
+        "url": "https://harmonicfusion.dance/icons/dark/icon-256.png",
         "width": 256,
         "height": 256
-      },
-      "image": {
-        "@type": "ImageObject",
-        "url": "https://harmonicfusiondance.github.io/icons/dark/icon-512.png",
-        "width": 512,
-        "height": 512
       },
       "address": {
         "@type": "PostalAddress",
@@ -826,89 +63,62 @@
     </script>
 </head>
 <body>
+    <nav class="site-nav" aria-label="Main">
+        <div class="site-nav-inner">
+            <a class="site-nav-brand" href="/">Harmonic Fusion</a>
+            <ul class="site-nav-links">
+                <li><a href="/" class="active" aria-current="page">Eugene Blues Fusion</a></li>
+                <li><a href="/learning/">Learning</a></li>
+                <li><a href="/calendar/">Calendar</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container">
-        <!-- Logo Section -->
-        <div class="logo-section">
-            <img src="logo.png" alt="Harmonic Blues Fusion Logo"><br>
-            <h1>Harmonic Blues Fusion</h1>
-            <p style="text-transform: uppercase; font-size: 0.875rem; color: var(--text-secondary);">Eugene, Oregon</p>
+        <div class="logo-section" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;">
+            <img src="logo.png" alt="Harmonic Fusion logo" style="display:block;">
+            <h1 style="display:block;width:100%;text-align:center;">Harmonic Fusion</h1>
         </div>
 
-        <!-- Main Announcement -->
         <div class="announcement">
-            <p style="padding-bottom: 2rem;">Our mission is to nurture a vibrant community who dance, play, connect, care, and love. We create harmony between differences and enrich the fusion dance scene in Eugene through joyful, heart-led gatherings.
-            </p>
-
-            <p>7-10pm every Thursday at the Veteran's Memorial Club.</p>
+            <p>Our mission is to nurture a vibrant community who dance, play, connect, care, and love. We create harmony between differences and enrich the fusion dance scene in Eugene through joyful, heart-led gatherings.</p>
+            <p class="weekly">7–10pm every Thursday at the Veteran's Memorial Club.</p>
         </div>
 
-        <!-- Calendar Events Section -->
-        <div class="calendar-section">
-            <div class="calendar-header">
-                <h2>Upcoming Events</h2>
-                <!-- Add to Google Calendar Link -->
-                <div class="add-to-google-calendar">
-                    <a href="https://calendar.google.com/calendar/u/0?cid=aGFybW9uaWNmdXNpb25kYW5jZUBnbWFpbC5jb20" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    class="btn-add-to-google-calendar" 
-                    id="add-to-google-calendar">
-                        Add to Google Calendar
-                    </a>
+        <div class="carousel" data-carousel tabindex="0" role="region" aria-roledescription="carousel" aria-label="Eugene Fusion photos">
+            <div class="carousel-viewport">
+                <div class="carousel-track" data-carousel-track>
+                    <div class="carousel-slide" data-carousel-slide>
+                        <img src="images/eugene/placeholder-1.svg" alt="Eugene Fusion dance floor placeholder 1">
+                    </div>
+                    <div class="carousel-slide" data-carousel-slide>
+                        <img src="images/eugene/placeholder-2.svg" alt="Eugene Fusion dance floor placeholder 2">
+                    </div>
+                    <div class="carousel-slide" data-carousel-slide>
+                        <img src="images/eugene/placeholder-3.svg" alt="Eugene Fusion dance floor placeholder 3">
+                    </div>
+                    <div class="carousel-slide" data-carousel-slide>
+                        <img src="images/eugene/placeholder-4.svg" alt="Eugene Fusion dance floor placeholder 4">
+                    </div>
                 </div>
             </div>
-
-            <!-- Loading State -->
-            <div class="loading-state" id="loading-state">
-                <div class="spinner"></div>
-                <p>Loading events...</p>
-            </div>
-
-            <!-- Events List -->
-            <div class="events-container" id="events-container">
-                <!-- Events will be inserted here -->
-            </div>
-
-            <!-- Date Range Selector -->
-            <div class="date-range-selector">
-                <div class="date-input-group">
-                    <label for="month-selector">Month:</label>
-                    <input type="month" id="month-selector" />
-                </div>
-                <div class="date-input-group">
-                    <label for="start-date">Start Date:</label>
-                    <input type="date" id="start-date" />
-                </div>
-                <div class="date-input-group">
-                    <label for="end-date">End Date:</label>
-                    <input type="date" id="end-date" />
-                </div>
-            </div>
+            <button type="button" class="carousel-btn prev" data-carousel-prev aria-label="Previous photo">‹</button>
+            <button type="button" class="carousel-btn next" data-carousel-next aria-label="Next photo">›</button>
+            <div class="carousel-dots" data-carousel-dots role="tablist" aria-label="Slide indicators"></div>
         </div>
 
-        <!-- Event Details Modal -->
-        <dialog id="event-modal" class="event-modal">
-            <div class="modal-content">
-                <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
-                <h3 id="modal-title" class="modal-title"></h3>
-                <div class="modal-details">
-                    <div class="modal-detail-item">
-                        <span class="modal-label">Time:</span>
-                        <span id="modal-time" class="modal-value"></span>
-                    </div>
-                    <div class="modal-detail-item">
-                        <span class="modal-label">Location:</span>
-                        <span id="modal-location" class="modal-value"></span>
-                    </div>
-                    <div class="modal-detail-item modal-description">
-                        <span class="modal-label">Description:</span>
-                        <div id="modal-description" class="modal-value"></div>
-                    </div>
-                </div>
-            </div>
-        </dialog>
+        <section class="teaser teaser-learning" aria-labelledby="learning-teaser-heading">
+            <h2 class="section-heading" id="learning-teaser-heading">Learn with Dylan</h2>
+            <p>Dylan explores partner styles from Lindy Hop to blues to tango and contact improv, and teaches fusion built around connection and presence. Open to travel for teaching and DJ sets.</p>
+            <a class="btn" href="/learning/">Lessons &amp; teaching</a>
+        </section>
 
-        <!-- Email Signup Section -->
+        <section class="teaser teaser-calendar" aria-labelledby="calendar-teaser-heading">
+            <h2 class="section-heading" id="calendar-teaser-heading" style="font-size:1.25rem;margin-bottom:0.5rem;">Upcoming events</h2>
+            <p>See what’s next on the calendar.</p>
+            <a href="/calendar/">See upcoming events →</a>
+        </section>
+
         <div class="signup-section">
             <div class="signup-header">
                 <h2>Never miss a dance…</h2>
@@ -918,19 +128,17 @@
             </div>
         </div>
 
-        <!-- Contribution CTA -->
         <div class="contribution-cta">
             <p>Want to help keep the scene going?<br>Email <a href="mailto:community@harmonicfusion.dance">community@harmonicfusion.dance</a> to tell us more.</p>
         </div>
 
-        <!-- Footer Links -->
-        <div style="text-align: center; margin-top: 2rem; padding: 1rem;">
-            <a href="https://drive.google.com/drive/folders/1hsuSSYhc7H6Dixn3kC1UrrmSNY_CrHPQ" style="color: var(--text-tertiary); text-decoration: none; font-size: 0.875rem; transition: color 0.3s ease;">Downloads</a>
-             | 
-            <a href="terms.html" style="color: var(--text-tertiary); text-decoration: none; font-size: 0.875rem; transition: color 0.3s ease;">Terms & Liability</a>
+        <div class="page-footer">
+            <a href="https://drive.google.com/drive/folders/1hsuSSYhc7H6Dixn3kC1UrrmSNY_CrHPQ">Downloads</a>
+            <span class="sep">|</span>
+            <a href="terms.html">Terms &amp; Liability</a>
         </div>
     </div>
-    <script src="script.js"></script>
-    <script src="calendar.js"></script>
+
+    <script src="carousel.js"></script>
 </body>
 </html>

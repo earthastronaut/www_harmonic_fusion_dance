@@ -1,0 +1,308 @@
+/* Home / Eugene Fusion page */
+
+.logo-section {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 2.5rem;
+    animation: fadeIn 1s ease-out 0.2s both;
+}
+
+.logo-section > img {
+    display: block;
+    max-width: 120px;
+    width: 120px;
+    height: auto;
+    opacity: 0.95;
+    flex: 0 0 auto;
+}
+
+.logo-section > h1 {
+    display: block;
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin: 0;
+    position: relative;
+    flex: 0 0 auto;
+    background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #ffffff 40%,
+        rgba(255, 255, 255, 0.4) 50%,
+        #ffffff 60%,
+        #ffffff 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 10s ease-in-out infinite, twinkle 30s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes twinkle {
+    0%, 93%, 100% {
+        text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+        filter: brightness(1);
+    }
+    95% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+        filter: brightness(1.2);
+    }
+    96.5% {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+        filter: brightness(1.4);
+    }
+    98% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        filter: brightness(1.2);
+    }
+    99% {
+        text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+        filter: brightness(1);
+    }
+}
+
+.announcement {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    animation: fadeIn 1s ease-out 0.4s both;
+}
+
+.announcement p {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+.announcement .weekly {
+    margin-top: 1.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Carousel */
+.carousel {
+    position: relative;
+    margin-bottom: 2.5rem;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    outline: none;
+    animation: fadeIn 1s ease-out 0.5s both;
+}
+
+.carousel-viewport {
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.45s ease;
+    will-change: transform;
+}
+
+.carousel-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    height: 100%;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    z-index: 2;
+}
+
+.carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.carousel-btn.prev { left: 0.75rem; }
+.carousel-btn.next { right: 0.75rem; }
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+}
+
+.carousel-dots button {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    background: var(--text-tertiary);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.carousel-dots button.active {
+    background: var(--accent);
+    transform: scale(1.2);
+}
+
+/* Teasers */
+.teaser {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 2rem 1.25rem;
+    animation: fadeIn 1s ease-out 0.6s both;
+}
+
+.teaser-learning {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.teaser p {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 1.5rem;
+}
+
+.teaser-calendar {
+    padding: 1.25rem;
+    animation-delay: 0.7s;
+}
+
+.teaser-calendar p {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.teaser-calendar a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.teaser-calendar a:hover {
+    border-bottom-color: var(--accent);
+}
+
+.signup-section {
+    background: var(--bg-secondary);
+    border-radius: 18px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    animation: fadeIn 1s ease-out 0.8s both;
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.signup-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.signup-form-wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.signup-form-wrapper iframe,
+.signup-form-wrapper form {
+    width: 100%;
+}
+
+.contribution-cta {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    animation: fadeIn 1s ease-out 1s both;
+}
+
+.contribution-cta p {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.contribution-cta a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    transition: border-color 0.3s ease;
+}
+
+.contribution-cta a:hover {
+    border-bottom-color: var(--text-primary);
+}
+
+@media (min-width: 640px) {
+    .logo-section > img {
+        max-width: 140px;
+        width: 140px;
+    }
+
+    .logo-section > h1 {
+        font-size: 2.5rem;
+    }
+
+    .announcement p {
+        font-size: 1.25rem;
+    }
+
+    .signup-section {
+        padding: 3rem 2.5rem;
+    }
+
+    .signup-header h2 {
+        font-size: 1.75rem;
+    }
+}

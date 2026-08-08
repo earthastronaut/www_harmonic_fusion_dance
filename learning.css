@@ -1,0 +1,129 @@
+/* Learning page */
+
+.page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.page-header .lede {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+.learning-section {
+    margin-bottom: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.learning-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.learning-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+    text-align: center;
+}
+
+.learning-section p {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.learning-section p:last-child {
+    margin-bottom: 0;
+}
+
+.styles-list {
+    list-style: none;
+    margin: 1.25rem 0 1.5rem;
+    padding: 0;
+    text-align: center;
+}
+
+.styles-list li {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.styles-list li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.cta-block {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.email-note {
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    text-align: center;
+}
+
+.email-note a {
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.email-note a:hover {
+    color: var(--text-primary);
+}
+
+.experience-list {
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+}
+
+.experience-list li {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding-left: 0;
+}
+
+.experience-list li strong {
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 0.15rem;
+}
+
+.experience-list a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.experience-list a:hover {
+    text-decoration: underline;
+}
+
+@media (min-width: 640px) {
+    .page-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .learning-section h2 {
+        font-size: 1.75rem;
+    }
+}
