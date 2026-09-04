@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Page not found — Harmonic Fusion, weekly fusion dance in Eugene, Oregon.">
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/dark/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/dark/icon-256.png">
+    <link rel="manifest" href="/manifest.json">
+
+    <title>Lost the beat — Harmonic Fusion</title>
+    <link rel="stylesheet" href="/site.css">
+    <style>
+        .notfound {
+            text-align: center;
+            padding: 2rem 0 1rem;
+        }
+
+        .notfound-code {
+            font-size: clamp(4.5rem, 22vw, 9rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.05em;
+        }
+
+        /* The middle 0 is a spinning dancer twirling in place. */
+        .notfound-spin {
+            display: inline-block;
+            animation: twirl 3s ease-in-out infinite;
+        }
+
+        @keyframes twirl {
+            0%, 60%, 100% { transform: rotate(0deg); }
+            80% { transform: rotate(360deg); }
+        }
+
+        .notfound-dancers {
+            font-size: clamp(2.5rem, 12vw, 4rem);
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.15em;
+            line-height: 1;
+        }
+
+        .notfound-dancers span {
+            display: inline-block;
+            animation: sway 1.6s ease-in-out infinite;
+        }
+
+        .notfound-dancers span:nth-child(2) {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: translateY(0) rotate(-6deg); }
+            50% { transform: translateY(-0.12em) rotate(6deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .notfound-spin,
+            .notfound-dancers span {
+                animation: none;
+            }
+        }
+
+        .notfound-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-top: 1.5rem;
+        }
+
+        .notfound-text {
+            font-size: 1.0625rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 32rem;
+            margin: 0.75rem auto 0;
+        }
+
+        .notfound-actions {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .notfound-actions .btn-secondary {
+            display: inline-block;
+            padding: 0.75rem 1.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .notfound-actions .btn-secondary:hover {
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav" aria-label="Main">
+        <div class="site-nav-inner">
+            <a class="site-nav-brand" href="/">Harmonic Fusion</a>
+            <button type="button" class="site-nav-toggle" aria-expanded="false" aria-controls="site-nav-menu" aria-label="Open menu">
+                <span class="site-nav-toggle-bars" aria-hidden="true"></span>
+            </button>
+            <ul class="site-nav-links" id="site-nav-menu">
+                <li><a href="/">Eugene Blues Fusion</a></li>
+                <li><a href="/learning/">Learning</a></li>
+                <li><a href="/calendar/">Calendar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <main class="notfound">
+            <p class="notfound-code" aria-label="404">
+                <span aria-hidden="true">4</span><span class="notfound-spin" aria-hidden="true">0</span><span aria-hidden="true">4</span>
+            </p>
+
+            <p class="notfound-dancers" aria-hidden="true">
+                <span>💃</span><span>🕺</span>
+            </p>
+
+            <h1 class="notfound-title">This page lost the beat</h1>
+            <p class="notfound-text">It twirled off somewhere and never came back. Happens to the best of us — let's find you a new partner.</p>
+
+            <div class="notfound-actions">
+                <a class="btn" href="/">Back to the dance floor</a>
+                <a class="btn-secondary" href="/calendar/">See the calendar</a>
+            </div>
+        </main>
+
+        <div class="page-footer">
+            <a href="/">Home</a>
+            <span class="sep">|</span>
+            <a href="/terms.html">Terms &amp; Liability</a>
+        </div>
+    </div>
+
+    <script src="/nav.js"></script>
+</body>
+</html>

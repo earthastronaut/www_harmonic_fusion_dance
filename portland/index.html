@@ -48,6 +48,65 @@
             border: 0;
         }
 
+        /* .form-embed sets display: block, which would otherwise beat [hidden]. */
+        [hidden] {
+            display: none !important;
+        }
+
+        .form-confirmation {
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+        }
+
+        .form-confirmation-mark {
+            font-size: 3rem;
+            line-height: 1;
+        }
+
+        .form-confirmation h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-top: 1rem;
+        }
+
+        .form-confirmation p {
+            font-size: 1.0625rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 32rem;
+            margin: 0.75rem auto 0;
+        }
+
+        .form-confirmation-actions {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .form-confirmation-actions .btn-secondary {
+            display: inline-block;
+            padding: 0.75rem 1.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .form-confirmation-actions .btn-secondary:hover {
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
         @media (min-width: 640px) {
             .page-header h1 {
                 font-size: 2.5rem;
@@ -83,10 +142,19 @@
             <a class="btn" href="https://calendar.app.google/kwqLmNfTgyEkuvN18" target="_blank" rel="noopener noreferrer">Add to your calendar</a>
         </p>
 
-        <iframe class="form-embed"
+        <iframe class="form-embed" id="signup-form"
                 src="https://docs.google.com/forms/d/e/1FAIpQLSflNSTi6NSSRVcAm_yW5uPVxWGJYLe9Qr-H6vGphSOJRnMYww/viewform?embedded=true"
-                title="Roadtrip signup form"
-                loading="lazy">Loading…</iframe>
+                title="Roadtrip signup form">Loading…</iframe>
+
+        <section class="form-confirmation" id="signup-confirmation" hidden aria-live="polite">
+            <p class="form-confirmation-mark" aria-hidden="true">🎉</p>
+            <h2>You're on the list!</h2>
+            <p>Your response has been recorded. We'll be in touch with ride and lodging details before September 18th — see you in Portland.</p>
+            <div class="form-confirmation-actions">
+                <a class="btn" href="https://calendar.app.google/kwqLmNfTgyEkuvN18" target="_blank" rel="noopener noreferrer">Add to your calendar</a>
+                <button type="button" class="btn-secondary" id="signup-again">Submit another response</button>
+            </div>
+        </section>
 
         <div class="page-footer">
             <a href="https://drive.google.com/drive/folders/1hsuSSYhc7H6Dixn3kC1UrrmSNY_CrHPQ">Downloads</a>
@@ -96,5 +164,44 @@
     </div>
 
     <script src="../nav.js"></script>
+    <script>
+        (function () {
+            var form = document.getElementById('signup-form');
+            var confirmation = document.getElementById('signup-confirmation');
+            var calendarCta = document.querySelector('.calendar-cta');
+            var again = document.getElementById('signup-again');
+            var formSrc = form.src;
+
+            // The iframe is cross-origin, so we can't read the Google confirmation
+            // page. Instead, the first load is the blank form and any later load
+            // means the response was submitted.
+            var seenInitialLoad = false;
+            var reloading = false;
+
+            form.addEventListener('load', function () {
+                if (!seenInitialLoad) {
+                    seenInitialLoad = true;
+                    return;
+                }
+                if (reloading) {
+                    reloading = false;
+                    return;
+                }
+                form.hidden = true;
+                if (calendarCta) calendarCta.hidden = true;
+                confirmation.hidden = false;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            again.addEventListener('click', function () {
+                reloading = true;
+                confirmation.hidden = true;
+                form.hidden = false;
+                if (calendarCta) calendarCta.hidden = false;
+                form.src = formSrc;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+    </script>
 </body>
 </html>
