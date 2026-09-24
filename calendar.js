@@ -1,8 +1,6 @@
-// Google Calendar Configuration
-const CALENDAR_ID = 'harmonicfusiondance@gmail.com';
-// Optional: Set API_KEY to use Google Calendar API v3 (expands recurring events automatically)
-// Leave empty to use iCal feed (requires manual RRULE expansion)
-const API_KEY = 'AIzaSyDG6sIfQdFEPpGuGRupWNXkwRM5fGarY1w'; // Set your Google Calendar API key here if you want to use API v3
+// Google Calendar Configuration (see config.js)
+const CALENDAR_ID = SITE_CONFIG.calendarId;
+const API_KEY = SITE_CONFIG.googleCalendarApiKey || '';
 
 // State
 let allEvents = [];

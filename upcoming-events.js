@@ -1,7 +1,7 @@
 // Next upcoming events for the home page
 (function () {
-    const CALENDAR_ID = 'harmonicfusiondance@gmail.com';
-    const API_KEY = 'AIzaSyDG6sIfQdFEPpGuGRupWNXkwRM5fGarY1w';
+    const CALENDAR_ID = SITE_CONFIG.calendarId;
+    const API_KEY = SITE_CONFIG.googleCalendarApiKey || '';
     const LIMIT = 3;
 
     const listEl = document.getElementById('upcoming-events-list');

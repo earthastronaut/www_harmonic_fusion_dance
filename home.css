@@ -199,6 +199,12 @@
 
 /* Event details modal (shared pattern with calendar) */
 .event-modal {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    height: fit-content;
+    max-height: 90vh;
+    overflow: auto;
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: 18px;
