@@ -27,17 +27,23 @@ Keep your production domain referrers as well (e.g. `https://harmonicfusion.danc
 
 1. Create a new GitHub repository
 2. Push these files to the repository
-3. Go to Settings → Pages → Deploy from branch → Select `main` branch
-4. Your site will be live at `https://YOUR_USERNAME.github.io/REPO_NAME/`
+3. Go to Settings → Pages → Build and deployment → Source: **GitHub Actions**
+4. After the first push to `main`, the Deploy GitHub Pages workflow publishes `src/`
+5. Your site will be live at `https://YOUR_USERNAME.github.io/REPO_NAME/` (or your custom domain)
 
-## Files
+## Layout
+
+- `src/` — site files served in production and by the local server
+- `run_local.py` — local dev server (port 8747, auto-refresh)
+- `.github/workflows/pages.yml` — deploys `src/` to GitHub Pages
+
+### Key files in `src/`
 
 - `index.html` - Main page
-- `styles.css` - Styling
-- `script.js` - Contact form functionality
+- `site.css` / `home.css` - Shared and home styling
 - `calendar.js` - Calendar events loading and display
-- `run_local.py` - Local dev server (port 8747, auto-refresh)
 - `config.js` - Calendar ID and optional Google Calendar API key
+- `CNAME` - Custom domain for GitHub Pages
 
 ## Google Calendar API Setup
 
@@ -74,8 +80,8 @@ The calendar can use either the Google Calendar API v3 (recommended) or fall bac
    - Check only "Google Calendar API"
    - Click "Save"
 
-6. **Configure the API Key in `config.js`**
-   - Open `config.js`
+6. **Configure the API Key in `src/config.js`**
+   - Open `src/config.js`
    - Set `googleCalendarApiKey` to your key:
      ```javascript
      googleCalendarApiKey: 'YOUR_API_KEY_HERE'
@@ -124,7 +130,7 @@ If you see a `403 (Forbidden)` error when using the API, check the following:
    - **Local testing**: add `http://localhost:8747/*` and `http://127.0.0.1:8747/*` (or temporarily remove referrer restrictions)
 
 4. **Check Calendar ID Format**
-   - The calendar ID in `config.js` should match your Google Calendar email
+   - The calendar ID in `src/config.js` should match your Google Calendar email
    - For Gmail calendars, use the full email: `yourcalendar@gmail.com`
    - For other calendar types, you may need the full calendar ID from Calendar settings
 
@@ -137,4 +143,4 @@ If issues persist, the calendar will automatically fall back to the iCal feed me
 
 ## Customization
 
-Edit `index.html` for content changes and `styles.css` for colors and styling.
+Edit files under `src/` (for example `src/index.html` and `src/site.css`) for content and styling.
