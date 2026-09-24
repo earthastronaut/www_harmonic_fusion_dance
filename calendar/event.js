@@ -326,7 +326,7 @@
             } catch (_) {
                 copyLinkBtn.textContent = 'Copy failed';
                 setTimeout(() => {
-                    copyLinkBtn.textContent = 'Copy link';
+                    copyLinkBtn.textContent = 'Copy Link';
                 }, 2000);
             }
         });
