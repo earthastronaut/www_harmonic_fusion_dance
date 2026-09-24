@@ -79,82 +79,9 @@
         return startTime;
     }
 
-    function cleanDescriptionHTML(html) {
-        if (!html) return html;
-
-        let tempDiv;
-        try {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const parserError = doc.querySelector('parsererror');
-            if (parserError) {
-                tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
-            } else {
-                tempDiv = doc.body;
-                if (!tempDiv || tempDiv.children.length === 0) {
-                    tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = html;
-                }
-            }
-        } catch (e) {
-            tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
-        }
-
-        const commentWalker = document.createTreeWalker(
-            tempDiv,
-            NodeFilter.SHOW_COMMENT,
-            null,
-            false
-        );
-        const comments = [];
-        let node;
-        while ((node = commentWalker.nextNode())) {
-            comments.push(node);
-        }
-        comments.forEach((comment) => comment.remove());
-
-        const textNodeWalker = document.createTreeWalker(
-            tempDiv,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-        );
-        const textNodes = [];
-        let textNode;
-        while ((textNode = textNodeWalker.nextNode())) {
-            textNodes.push(textNode);
-        }
-
-        textNodes.forEach((textNodeItem) => {
-            let text = textNodeItem.textContent;
-            const originalText = text;
-            text = text
-                .replace(/\\,/g, ',')
-                .replace(/\\;/g, ';')
-                .replace(/\\!/g, '!')
-                .replace(/\\&/g, '&')
-                .replace(/\\n/g, ' ')
-                .replace(/\\N/g, ' ')
-                .replace(/\\\\/g, '\\')
-                .replace(/Â/g, '')
-                .replace(/\s+([,\.!?;:])/g, '$1')
-                .replace(/\s{2,}/g, ' ');
-            if (text !== originalText) {
-                textNodeItem.textContent = text;
-            }
-        });
-
-        tempDiv.querySelectorAll('p').forEach((p) => p.classList.add('description-paragraph'));
-        tempDiv.querySelectorAll('a').forEach((a) => a.classList.add('description-link'));
-        tempDiv.querySelectorAll('b, strong').forEach((b) => b.classList.add('description-bold'));
-        tempDiv.querySelectorAll('ul, ol').forEach((list) => list.classList.add('description-list'));
-
-        return tempDiv.innerHTML
-            .replace(/<p[^>]*>\s*<\/p>/g, '')
-            .replace(/<!--[^>]*-->/g, '')
-            .replace(/<br\s*\/?>\s*<br\s*\/?>/g, '<br>');
+    function eventShareUrl(event) {
+        if (!event || !event.id) return null;
+        return `/calendar/${encodeURIComponent(event.id)}`;
     }
 
     function showEventModal(event) {
@@ -176,7 +103,17 @@
         }
 
         const description = event.description || 'No description available.';
-        document.getElementById('modal-description').innerHTML = cleanDescriptionHTML(description);
+        document.getElementById('modal-description').innerHTML = renderEventDescription(description);
+
+        const viewLink = document.getElementById('modal-view-event');
+        const viewWrap = viewLink ? viewLink.closest('.modal-view-event-wrap') : null;
+        const shareUrl = eventShareUrl(event);
+        if (viewLink && shareUrl) {
+            viewLink.href = shareUrl;
+            if (viewWrap) viewWrap.hidden = false;
+        } else if (viewWrap) {
+            viewWrap.hidden = true;
+        }
 
         eventModal.showModal();
     }
@@ -250,6 +187,7 @@
         if (!res.ok) throw new Error(`API ${res.status}`);
         const data = await res.json();
         return (data.items || []).map((item) => ({
+            id: item.id || null,
             summary: item.summary || '',
             description: item.description || '',
             location: item.location || '',
@@ -295,7 +233,9 @@
             const start = parseIcalDate(get('DTSTART'));
             if (!start || start < now) continue;
 
+            const uid = get('UID').replace(/@google\.com$/i, '');
             events.push({
+                id: uid || null,
                 summary: get('SUMMARY').replace(/\\,/g, ',').replace(/\\n/gi, ' '),
                 description: get('DESCRIPTION').replace(/\\,/g, ',').replace(/\\n/gi, '\n'),
                 location: get('LOCATION').replace(/\\,/g, ','),

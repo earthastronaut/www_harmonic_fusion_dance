@@ -14,6 +14,30 @@
 
     <title>Lost the beat — Harmonic Fusion</title>
     <link rel="stylesheet" href="/site.css">
+    <script>
+        // GitHub Pages: serve shareable event pages at /calendar/{eventId}
+        (function () {
+            var match = location.pathname.match(/^\/calendar\/([^/]+)\/?$/);
+            if (!match) return;
+            var segment = decodeURIComponent(match[1]);
+            if (!segment || segment.indexOf('.') !== -1) return;
+            if (segment === 'event.html' || segment === 'index.html') return;
+
+            fetch('/calendar/event.html')
+                .then(function (res) {
+                    if (!res.ok) throw new Error('Event page missing');
+                    return res.text();
+                })
+                .then(function (html) {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                })
+                .catch(function () {
+                    /* fall through to normal 404 UI */
+                });
+        })();
+    </script>
     <style>
         .notfound {
             text-align: center;

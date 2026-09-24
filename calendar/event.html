@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Harmonic Fusion event details">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/dark/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/dark/icon-256.png">
+    <link rel="manifest" href="/manifest.json">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CZPPP4ED1B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CZPPP4ED1B');
+    </script>
+
+    <title>Event | Harmonic Fusion</title>
+    <link rel="stylesheet" href="/site.css">
+    <link rel="stylesheet" href="/calendar.css">
+</head>
+<body>
+    <nav class="site-nav" aria-label="Main">
+        <div class="site-nav-inner">
+            <a class="site-nav-brand" href="/">Harmonic Fusion</a>
+            <button type="button" class="site-nav-toggle" aria-expanded="false" aria-controls="site-nav-menu" aria-label="Open menu">
+                <span class="site-nav-toggle-bars" aria-hidden="true"></span>
+            </button>
+            <ul class="site-nav-links" id="site-nav-menu">
+                <li><a href="/">Eugene Blues Fusion</a></li>
+                <li><a href="/learning/">Learning</a></li>
+                <li><a href="/calendar/" class="active" aria-current="page">Calendar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <p class="event-page-back">
+            <a href="/calendar/">← Back to calendar</a>
+        </p>
+
+        <div class="loading-state active" id="loading-state">
+            <div class="spinner"></div>
+            <p>Loading event...</p>
+        </div>
+
+        <div class="event-page empty-state" id="error-state" hidden>
+            <p id="error-message">Event not found.</p>
+            <p style="margin-top: 1rem;">
+                <a href="/calendar/">View the calendar</a>
+            </p>
+        </div>
+
+        <article class="event-page" id="event-content" hidden>
+            <header class="event-page-header">
+                <h1 id="event-title"></h1>
+            </header>
+
+            <div class="event-page-details">
+                <div class="modal-detail-item">
+                    <span class="modal-label">Time</span>
+                    <span id="event-time" class="modal-value"></span>
+                </div>
+                <div class="modal-detail-item">
+                    <span class="modal-label">Location</span>
+                    <span id="event-location" class="modal-value"></span>
+                </div>
+                <div class="modal-detail-item modal-description">
+                    <span class="modal-label">Description</span>
+                    <div id="event-description" class="modal-value"></div>
+                </div>
+            </div>
+
+            <div class="event-page-actions">
+                <button type="button" class="btn-copy-link" id="copy-link">Copy link</button>
+                <a href="/calendar/" class="btn-add-to-google-calendar event-page-calendar-link">Full calendar</a>
+            </div>
+        </article>
+
+        <div class="page-footer">
+            <a href="https://drive.google.com/drive/folders/1hsuSSYhc7H6Dixn3kC1UrrmSNY_CrHPQ">Downloads</a>
+            <span class="sep">|</span>
+            <a href="/terms.html">Terms &amp; Liability</a>
+        </div>
+    </div>
+
+    <script src="/config.js"></script>
+    <script src="/nav.js"></script>
+    <script src="/marked.min.js"></script>
+    <script src="/event-description.js"></script>
+    <script src="/calendar/event.js"></script>
+</body>
+</html>

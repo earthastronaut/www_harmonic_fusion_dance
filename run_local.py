@@ -7,20 +7,27 @@ Uses only Python 3 standard library.
 import http.server
 import socketserver
 import os
+import re
 import threading
 import time
+import webbrowser
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 
 # Configuration
 PORT = 8747
 WATCH_EXTENSIONS = {'.html', '.css', '.js'}
 POLL_INTERVAL = 0.5  # seconds
 REFRESH_ENDPOINT = '/__refresh_check__'
+LOCAL_URL = f'http://localhost:{PORT}/'
 
 # Global state for file modification times
 file_mtimes: dict[str, float] = {}
 last_change_time: float = time.time()
+
+# /calendar/{eventId} → calendar/event.html (shareable event pages)
+EVENT_PATH_RE = re.compile(r'^/calendar/([^/]+)/?$')
+EVENT_RESERVED = {'event.html', 'event.js', 'index.html'}
 
 
 class AutoRefreshHandler(http.server.SimpleHTTPRequestHandler):
@@ -45,7 +52,22 @@ class AutoRefreshHandler(http.server.SimpleHTTPRequestHandler):
         
         # Handle normal file requests
         parsed_path = urlparse(self.path)
-        file_path = parsed_path.path.lstrip('/')
+        path = unquote(parsed_path.path)
+
+        # Shareable event URLs: /calendar/{eventId}
+        event_match = EVENT_PATH_RE.match(path)
+        if event_match:
+            segment = event_match.group(1)
+            if (
+                segment
+                and segment not in EVENT_RESERVED
+                and '.' not in segment
+                and not Path('calendar', segment).exists()
+            ):
+                self.serve_html_with_refresh('calendar/event.html')
+                return
+
+        file_path = path.lstrip('/')
         
         if not file_path:
             file_path = 'index.html'
@@ -168,9 +190,10 @@ def main():
     socketserver.TCPServer.allow_reuse_address = True
     
     with socketserver.TCPServer(("", PORT), AutoRefreshHandler) as httpd:
-        print(f"Server running at http://localhost:{PORT}/")
+        print(f"Server running at {LOCAL_URL}")
         print("Watching for changes in .html, .css, and .js files...")
         print("Press Ctrl+C to stop the server")
+        threading.Timer(0.5, lambda: webbrowser.open(LOCAL_URL)).start()
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
@@ -179,4 +202,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

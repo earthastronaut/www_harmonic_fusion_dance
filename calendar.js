@@ -194,6 +194,7 @@ function parseICal(icalData) {
         if (line === 'BEGIN:VEVENT') {
             inEvent = true;
             currentEvent = {
+                id: null,
                 summary: '',
                 description: '',
                 location: '',
@@ -289,6 +290,11 @@ function parseICal(icalData) {
             case 'RRULE':
                 currentProperty = 'rrule';
                 currentValue = value;
+                break;
+            case 'UID':
+                currentProperty = 'id';
+                // Google iCal UIDs look like "abc123@google.com"; API ids omit the domain
+                currentValue = value.replace(/@google\.com$/i, '');
                 break;
         }
     }
@@ -463,6 +469,7 @@ function expandRRULE(event, maxDate) {
         const instanceEnd = new Date(instanceStart.getTime() + duration);
         
         const instance = {
+            id: event.id ? googleStyleInstanceId(event.id, instanceStart) : null,
             summary: event.summary,
             description: event.description,
             location: event.location,
@@ -647,6 +654,7 @@ async function loadEventsFromAPI() {
                 const end = item.end.dateTime ? new Date(item.end.dateTime) : new Date(item.end.date);
                 
                 return {
+                    id: item.id || null,
                     summary: item.summary || '',
                     description: item.description || '',
                     location: item.location || '',
@@ -1049,6 +1057,28 @@ function formatEventTime(start, end) {
     return startTime;
 }
 
+function googleStyleInstanceId(baseId, start) {
+    if (!baseId || !start) return baseId || null;
+    const pad = (n) => String(n).padStart(2, '0');
+    const stamp =
+        start.getUTCFullYear() +
+        pad(start.getUTCMonth() + 1) +
+        pad(start.getUTCDate()) +
+        'T' +
+        pad(start.getUTCHours()) +
+        pad(start.getUTCMinutes()) +
+        pad(start.getUTCSeconds()) +
+        'Z';
+    // Avoid double-suffix if id is already an instance id
+    if (/_\d{8}T\d{6}Z$/.test(baseId)) return baseId;
+    return `${baseId}_${stamp}`;
+}
+
+function eventShareUrl(event) {
+    if (!event || !event.id) return null;
+    return `/calendar/${encodeURIComponent(event.id)}`;
+}
+
 // Show event modal
 function showEventModal(event) {
     document.getElementById('modal-title').textContent = event.summary || 'Untitled Event';
@@ -1067,166 +1097,22 @@ function showEventModal(event) {
     
     const description = event.description || 'No description available.';
     const descriptionEl = document.getElementById('modal-description');
-    // Clean and render HTML content (description comes from Google Calendar, a trusted source)
-    descriptionEl.innerHTML = cleanDescriptionHTML(description);
+    // Clean and render HTML/markdown content (description comes from Google Calendar)
+    descriptionEl.innerHTML = renderEventDescription(description);
+
+    const viewLink = document.getElementById('modal-view-event');
+    const viewWrap = viewLink ? viewLink.closest('.modal-view-event-wrap') : null;
+    const shareUrl = eventShareUrl(event);
+    if (viewLink && shareUrl) {
+        viewLink.href = shareUrl;
+        if (viewWrap) viewWrap.hidden = false;
+    } else if (viewWrap) {
+        viewWrap.hidden = true;
+    }
     
     eventModal.showModal();
 }
 
-
-// Clean description HTML - remove escape sequences, fix HTML entities, clean up formatting
-// 
-// Why Google Calendar adds strange characters:
-// 1. Google Calendar stores HTML in the description field, but when accessed via API,
-//    it may be double-encoded or have encoding issues (UTF-8 BOM, HTML entity encoding)
-// 2. When content is copied/pasted into Google Calendar, hidden formatting can introduce
-//    escape sequences and encoding artifacts
-// 3. The iCal standard expects plain text, but Google Calendar allows HTML, causing
-//    compatibility issues that manifest as escape sequences
-//
-// Solution: Use DOMParser to properly parse HTML (handles entity decoding automatically),
-// then process text nodes directly to fix remaining encoding issues and broken words.
-function cleanDescriptionHTML(html) {
-    if (!html) return html;
-    
-    // Step 1: Use DOMParser to properly parse HTML (handles encoding automatically)
-    // DOMParser will decode HTML entities correctly
-    let tempDiv;
-    try {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        
-        // Check for parsing errors (DOMParser adds error elements if parsing fails)
-        const parserError = doc.querySelector('parsererror');
-        if (parserError) {
-            // If parsing failed, try with a wrapper div
-            tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
-        } else {
-            tempDiv = doc.body;
-            // If body is empty or only has error, fall back
-            if (!tempDiv || tempDiv.children.length === 0) {
-                tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
-            }
-        }
-    } catch (e) {
-        // Fall back to innerHTML if DOMParser fails
-        tempDiv = document.createElement('div');
-        tempDiv.innerHTML = html;
-    }
-    
-    // Remove HTML comments
-    const walker = document.createTreeWalker(
-        tempDiv,
-        NodeFilter.SHOW_COMMENT,
-        null,
-        false
-    );
-    const comments = [];
-    let node;
-    while (node = walker.nextNode()) {
-        comments.push(node);
-    }
-    comments.forEach(comment => comment.remove());
-    
-    // Step 2: Process text nodes directly to fix encoding issues
-    // This ensures we only modify actual text content, not HTML structure
-    // DOMParser has already decoded HTML entities, so we focus on text content issues
-    
-    // Step 2: Process text nodes to fix encoding issues and broken words
-    // This ensures we only modify actual text content, not HTML structure
-    const textNodeWalker = document.createTreeWalker(
-        tempDiv,
-        NodeFilter.SHOW_TEXT,
-        null,
-        false
-    );
-    
-    const textNodes = [];
-    let textNode;
-    while (textNode = textNodeWalker.nextNode()) {
-        textNodes.push(textNode);
-    }
-    
-    // Fix issues in text nodes
-    textNodes.forEach(node => {
-        let text = node.textContent;
-        const originalText = text;
-        
-        // Fix escape sequences that may appear in text content
-        // (DOMParser handles HTML entities, but not these escape sequences)
-        text = text
-            .replace(/\\,/g, ',')           // Escaped commas
-            .replace(/\\;/g, ';')            // Escaped semicolons
-            .replace(/\\!/g, '!')            // Escaped exclamation points
-            .replace(/\\&/g, '&')            // Escaped ampersands
-            .replace(/\\n/g, ' ')            // Escaped newlines (convert to space)
-            .replace(/\\N/g, ' ')            // Escaped newlines (uppercase)
-            .replace(/\\\\/g, '\\');         // Escaped backslashes
-        
-        // Fix encoding issues (like Â characters from UTF-8 encoding problems)
-        text = text
-            .replace(/Â/g, '')                // Remove stray Â characters
-            .replace(/\s+([,\.!?;:])/g, '$1')  // Remove space before punctuation
-            .replace(/\s{2,}/g, ' ');         // Multiple spaces to single space
-        
-        // Fix only the most obvious broken words (conservative approach)
-        // Only fix very common words that are clearly broken by single spaces
-        text = text
-            .replace(/\bt\s+o\b/gi, 'to')      // "t o" -> "to"
-            .replace(/\ba\s+nd\b/gi, 'and')    // "a nd" -> "and"
-            .replace(/\bc\s+o\s+m\s+e\b/gi, 'come')  // "c o m e" -> "come"
-            .replace(/\bb\s+o\s+t\s+h\b/gi, 'both'); // "b o t h" -> "both"
-        
-        // Update the text node if it changed
-        if (text !== originalText) {
-            node.textContent = text;
-        }
-    });
-    
-    // Get the cleaned HTML after text node processing
-    cleaned = tempDiv.innerHTML;
-    
-    // Add CSS classes to elements
-    const paragraphs = tempDiv.querySelectorAll('p');
-    paragraphs.forEach(p => {
-        p.classList.add('description-paragraph');
-    });
-    
-    const links = tempDiv.querySelectorAll('a');
-    links.forEach(a => {
-        a.classList.add('description-link');
-    });
-    
-    const boldElements = tempDiv.querySelectorAll('b, strong');
-    boldElements.forEach(b => {
-        b.classList.add('description-bold');
-    });
-    
-    const lists = tempDiv.querySelectorAll('ul, ol');
-    lists.forEach(list => {
-        list.classList.add('description-list');
-    });
-    
-    const listItems = tempDiv.querySelectorAll('li');
-    listItems.forEach(li => {
-        li.classList.add('description-list-item');
-    });
-    
-    // Clean up empty or broken tags
-    cleaned = tempDiv.innerHTML
-        .replace(/<p[^>]*>\s*<\/p>/g, '')           // Empty paragraphs
-        .replace(/<b[^>]*>\s*<\/b>/g, '')           // Empty bold tags
-        .replace(/<p[^>]*>\s*<p/g, '<p')            // Nested paragraphs
-        .replace(/<\/p>\s*<\/p>/g, '</p>')           // Double closing paragraphs
-        .replace(/<b[^>]*>\s*<b/g, '<b')             // Nested bold tags
-        .replace(/<\/b>\s*<\/b>/g, '</b>')            // Double closing bold tags
-        .replace(/<!--[^>]*-->/g, '')                // Remove any remaining comments
-        .replace(/<br\s*\/?>\s*<br\s*\/?>/g, '<br>'); // Multiple br tags to single
-    
-    return cleaned;
-}
 
 // Decode iCal escape sequences
 function decodeICalText(text) {

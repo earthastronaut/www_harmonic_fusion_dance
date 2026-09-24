@@ -2,6 +2,27 @@
 
 Static landing page for the Harmonic Blues Fusion dance community, ready to host on GitHub Pages.
 
+## Local development
+
+Requires Python 3 (standard library only).
+
+```bash
+python3 run_local.py
+```
+
+Opens [http://localhost:8747/](http://localhost:8747/) in your browser by default.
+
+The server auto-reloads the browser when `.html`, `.css`, or `.js` files change. Press `Ctrl+C` to stop.
+
+### Calendar API on localhost
+
+If upcoming events hang or fail with `403` while developing, your Google API key’s HTTP referrer restrictions likely block local origins. In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials), edit the key and add:
+
+- `http://localhost:8747/*`
+- `http://127.0.0.1:8747/*`
+
+Keep your production domain referrers as well (e.g. `https://harmonicfusion.dance/*`).
+
 ## Setup
 
 1. Create a new GitHub repository
@@ -15,6 +36,8 @@ Static landing page for the Harmonic Blues Fusion dance community, ready to host
 - `styles.css` - Styling
 - `script.js` - Contact form functionality
 - `calendar.js` - Calendar events loading and display
+- `run_local.py` - Local dev server (port 8747, auto-refresh)
+- `config.js` - Calendar ID and optional Google Calendar API key
 
 ## Google Calendar API Setup
 
@@ -45,17 +68,17 @@ The calendar can use either the Google Calendar API v3 (recommended) or fall bac
 5. **Restrict the API Key** (Recommended for security)
    - Click on the newly created API key to edit it
    - Under "Application restrictions", select "HTTP referrers (web sites)"
-   - Add your website URL (e.g., `https://harmonicfusiondance.github.io/*`)
+   - Add your website URL (e.g., `https://harmonicfusion.dance/*`)
+   - For local testing, also add `http://localhost:8747/*` and `http://127.0.0.1:8747/*`
    - Under "API restrictions", select "Restrict key"
    - Check only "Google Calendar API"
-   - Click "Create"
+   - Click "Save"
 
-6. **Configure the API Key in calendar.js**
-   - Open `calendar.js`
-   - Find the line: `const API_KEY = '';`
-   - Replace the empty string with your API key:
+6. **Configure the API Key in `config.js`**
+   - Open `config.js`
+   - Set `googleCalendarApiKey` to your key:
      ```javascript
-     const API_KEY = 'YOUR_API_KEY_HERE';
+     googleCalendarApiKey: 'YOUR_API_KEY_HERE'
      ```
 
 ### Is it Safe to Use a Public API Key?
@@ -98,10 +121,10 @@ If you see a `403 (Forbidden)` error when using the API, check the following:
    - Click on your API key
    - Under "API restrictions", ensure "Google Calendar API" is checked
    - Under "Application restrictions", if using HTTP referrers, ensure your domain is correct
-   - **Note**: If you're testing locally, you may need to temporarily remove HTTP referrer restrictions or add `http://localhost:*` and `http://127.0.0.1:*`
+   - **Local testing**: add `http://localhost:8747/*` and `http://127.0.0.1:8747/*` (or temporarily remove referrer restrictions)
 
 4. **Check Calendar ID Format**
-   - The calendar ID in `calendar.js` should match your Google Calendar email
+   - The calendar ID in `config.js` should match your Google Calendar email
    - For Gmail calendars, use the full email: `yourcalendar@gmail.com`
    - For other calendar types, you may need the full calendar ID from Calendar settings
 
@@ -115,4 +138,3 @@ If issues persist, the calendar will automatically fall back to the iCal feed me
 ## Customization
 
 Edit `index.html` for content changes and `styles.css` for colors and styling.
-

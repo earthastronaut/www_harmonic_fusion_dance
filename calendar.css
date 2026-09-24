@@ -343,6 +343,129 @@
     padding-left: 1.5rem;
 }
 
+.modal-description .modal-value .description-heading {
+    color: var(--text-primary);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 1rem 0 0.5rem;
+}
+
+.modal-description .modal-value .description-heading:first-child {
+    margin-top: 0;
+}
+
+.modal-description .modal-value h1.description-heading {
+    font-size: 1.2rem;
+}
+
+.modal-description .modal-value h2.description-heading {
+    font-size: 1.125rem;
+}
+
+.modal-description .modal-value h3.description-heading {
+    font-size: 1.05rem;
+}
+
+.modal-description .modal-value h4.description-heading,
+.modal-description .modal-value h5.description-heading,
+.modal-description .modal-value h6.description-heading {
+    font-size: 1rem;
+}
+
+.modal-view-event-wrap {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+}
+
+.modal-view-event {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9875rem;
+}
+
+.modal-view-event:hover {
+    text-decoration: underline;
+}
+
+.modal-view-event-wrap[hidden] {
+    display: none;
+}
+
+/* Shareable single-event page */
+.event-page-back {
+    margin-bottom: 1.25rem;
+}
+
+.event-page-back a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9375rem;
+}
+
+.event-page-back a:hover {
+    color: var(--text-primary);
+}
+
+.event-page {
+    background: var(--bg-secondary);
+    border-radius: 18px;
+    padding: 1.75rem 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+}
+
+.event-page-header {
+    margin-bottom: 1.5rem;
+}
+
+.event-page-header h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+}
+
+.event-page-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.event-page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+}
+
+.btn-copy-link {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.btn-copy-link:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.event-page-calendar-link {
+    margin: 0;
+}
+
 @media (max-width: 640px) {
     .month-day {
         min-height: 3.75rem;
