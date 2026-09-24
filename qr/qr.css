@@ -12,7 +12,7 @@
     --text-secondary: #a1a1a6;
     --text-tertiary: #6e6e73;
     --accent: #DF9535;
-    --text-accent: #ffffff;
+    --text-accent: #000000;
     --border: rgba(255, 255, 255, 0.1);
     --focus: rgba(223, 149, 53, 0.55);
 }
@@ -244,6 +244,7 @@ button:focus-visible {
 .btn:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--text-primary);
     transform: translateY(-1px);
 }
 
