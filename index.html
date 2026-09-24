@@ -37,7 +37,7 @@
 
     <title>Harmonic Fusion</title>
     <link rel="stylesheet" href="site.css">
-    <link rel="stylesheet" href="home.css?v=3">
+    <link rel="stylesheet" href="home.css?v=4">
 
     <script type="application/ld+json">
     {
@@ -147,6 +147,27 @@
             <a href="terms.html">Terms &amp; Liability</a>
         </div>
     </div>
+
+    <dialog id="event-modal" class="event-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+            <h3 id="modal-title" class="modal-title"></h3>
+            <div class="modal-details">
+                <div class="modal-detail-item">
+                    <span class="modal-label">Time</span>
+                    <span id="modal-time" class="modal-value"></span>
+                </div>
+                <div class="modal-detail-item">
+                    <span class="modal-label">Location</span>
+                    <span id="modal-location" class="modal-value"></span>
+                </div>
+                <div class="modal-detail-item modal-description">
+                    <span class="modal-label">Description</span>
+                    <div id="modal-description" class="modal-value"></div>
+                </div>
+            </div>
+        </div>
+    </dialog>
 
     <script src="nav.js"></script>
     <script src="carousel.js"></script>

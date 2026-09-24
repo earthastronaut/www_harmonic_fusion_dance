@@ -6,12 +6,30 @@
 
     const listEl = document.getElementById('upcoming-events-list');
     const loadingEl = document.getElementById('upcoming-events-loading');
+    const eventModal = document.getElementById('event-modal');
+    const modalClose = document.getElementById('modal-close');
     if (!listEl) return;
+
+    let eventsCache = [];
 
     function escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    function decodeICalText(text) {
+        if (!text) return text;
+        return text
+            .replace(/\\,/g, ',')
+            .replace(/\\;/g, ';')
+            .replace(/\\\\/g, '\\')
+            .replace(/\\[nN]/g, '\n');
+    }
+
+    function createMapsUrl(location) {
+        if (!location || location === 'Location TBD') return null;
+        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
     }
 
     function formatDate(date) {
@@ -35,24 +53,183 @@
         return `${startStr} – ${end.toLocaleTimeString('en-US', opts)}`;
     }
 
+    function formatEventDate(date) {
+        if (!date) return '';
+        return date.toLocaleDateString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            timeZone: 'America/Los_Angeles'
+        });
+    }
+
+    function formatEventTime(start, end) {
+        if (!start) return '';
+        const timeOptions = {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+            timeZone: 'America/Los_Angeles'
+        };
+        const startTime = start.toLocaleTimeString('en-US', timeOptions);
+        if (end) {
+            return `${startTime} - ${end.toLocaleTimeString('en-US', timeOptions)}`;
+        }
+        return startTime;
+    }
+
+    function cleanDescriptionHTML(html) {
+        if (!html) return html;
+
+        let tempDiv;
+        try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const parserError = doc.querySelector('parsererror');
+            if (parserError) {
+                tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+            } else {
+                tempDiv = doc.body;
+                if (!tempDiv || tempDiv.children.length === 0) {
+                    tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                }
+            }
+        } catch (e) {
+            tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+        }
+
+        const commentWalker = document.createTreeWalker(
+            tempDiv,
+            NodeFilter.SHOW_COMMENT,
+            null,
+            false
+        );
+        const comments = [];
+        let node;
+        while ((node = commentWalker.nextNode())) {
+            comments.push(node);
+        }
+        comments.forEach((comment) => comment.remove());
+
+        const textNodeWalker = document.createTreeWalker(
+            tempDiv,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+        const textNodes = [];
+        let textNode;
+        while ((textNode = textNodeWalker.nextNode())) {
+            textNodes.push(textNode);
+        }
+
+        textNodes.forEach((textNodeItem) => {
+            let text = textNodeItem.textContent;
+            const originalText = text;
+            text = text
+                .replace(/\\,/g, ',')
+                .replace(/\\;/g, ';')
+                .replace(/\\!/g, '!')
+                .replace(/\\&/g, '&')
+                .replace(/\\n/g, ' ')
+                .replace(/\\N/g, ' ')
+                .replace(/\\\\/g, '\\')
+                .replace(/Â/g, '')
+                .replace(/\s+([,\.!?;:])/g, '$1')
+                .replace(/\s{2,}/g, ' ');
+            if (text !== originalText) {
+                textNodeItem.textContent = text;
+            }
+        });
+
+        tempDiv.querySelectorAll('p').forEach((p) => p.classList.add('description-paragraph'));
+        tempDiv.querySelectorAll('a').forEach((a) => a.classList.add('description-link'));
+        tempDiv.querySelectorAll('b, strong').forEach((b) => b.classList.add('description-bold'));
+        tempDiv.querySelectorAll('ul, ol').forEach((list) => list.classList.add('description-list'));
+
+        return tempDiv.innerHTML
+            .replace(/<p[^>]*>\s*<\/p>/g, '')
+            .replace(/<!--[^>]*-->/g, '')
+            .replace(/<br\s*\/?>\s*<br\s*\/?>/g, '<br>');
+    }
+
+    function showEventModal(event) {
+        if (!eventModal) return;
+
+        document.getElementById('modal-title').textContent = event.summary || 'Untitled Event';
+        document.getElementById('modal-time').textContent =
+            formatEventTime(event.start, event.end) +
+            (event.start ? ` (${formatEventDate(event.start)})` : '');
+
+        const locationStr = decodeICalText(event.location) || 'Location TBD';
+        const locationEl = document.getElementById('modal-location');
+        const mapsUrl = createMapsUrl(locationStr);
+
+        if (mapsUrl) {
+            locationEl.innerHTML = `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="location-link">${escapeHtml(locationStr)}</a>`;
+        } else {
+            locationEl.textContent = locationStr;
+        }
+
+        const description = event.description || 'No description available.';
+        document.getElementById('modal-description').innerHTML = cleanDescriptionHTML(description);
+
+        eventModal.showModal();
+    }
+
+    function setupModal() {
+        if (!eventModal) return;
+
+        if (modalClose) {
+            modalClose.addEventListener('click', () => eventModal.close());
+        }
+
+        eventModal.addEventListener('click', (e) => {
+            if (e.target === eventModal) {
+                eventModal.close();
+            }
+        });
+    }
+
     function renderEvents(items) {
+        eventsCache = items;
+
         if (!items.length) {
             listEl.innerHTML = '<li class="upcoming-empty">No upcoming events right now.</li>';
             return;
         }
 
-        listEl.innerHTML = items.map((item) => {
-            const title = escapeHtml(item.summary || 'Untitled event');
-            const location = item.location ? escapeHtml(item.location) : '';
-            return `
-                <li class="upcoming-item">
-                    <div class="upcoming-title">${title}</div>
-                    <div class="upcoming-meta">${formatDate(item.start)} · ${formatTime(item.start, item.end)}</div>
-                    ${location ? `<div class="upcoming-location">${location}</div>` : ''}
+        listEl.innerHTML = items
+            .map((item, index) => {
+                const title = escapeHtml(item.summary || 'Untitled event');
+                const location = item.location ? escapeHtml(item.location) : '';
+                return `
+                <li>
+                    <button type="button" class="upcoming-item" data-event-index="${index}" aria-haspopup="dialog">
+                        <span class="upcoming-item-body">
+                            <span class="upcoming-title">${title}</span>
+                            <span class="upcoming-meta">${formatDate(item.start)} · ${formatTime(item.start, item.end)}</span>
+                            ${location ? `<span class="upcoming-location">${location}</span>` : ''}
+                        </span>
+                        <span class="upcoming-item-affordance" aria-hidden="true">Details →</span>
+                    </button>
                 </li>
             `;
-        }).join('');
+            })
+            .join('');
     }
+
+    listEl.addEventListener('click', (e) => {
+        const button = e.target.closest('.upcoming-item');
+        if (!button) return;
+        const index = Number(button.getAttribute('data-event-index'));
+        const event = eventsCache[index];
+        if (event) showEventModal(event);
+    });
 
     async function loadFromApi() {
         const now = new Date();
@@ -74,6 +251,7 @@
         const data = await res.json();
         return (data.items || []).map((item) => ({
             summary: item.summary || '',
+            description: item.description || '',
             location: item.location || '',
             start: item.start.dateTime
                 ? new Date(item.start.dateTime)
@@ -98,8 +276,7 @@
         }
         const m = value.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z)?$/);
         if (!m) return new Date(value);
-        const date = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]));
-        return date;
+        return new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]));
     }
 
     function parseIcalEvents(icalText) {
@@ -118,14 +295,9 @@
             const start = parseIcalDate(get('DTSTART'));
             if (!start || start < now) continue;
 
-            // Skip unexpanded recurring masters without a concrete instance time window
-            if (/^RRULE:/mi.test(block) && !/^RECURRENCE-ID:/mi.test(block)) {
-                // Still include if DTSTART is in the future (first occurrence)
-                // but prefer expanded instances when present
-            }
-
             events.push({
                 summary: get('SUMMARY').replace(/\\,/g, ',').replace(/\\n/gi, ' '),
+                description: get('DESCRIPTION').replace(/\\,/g, ',').replace(/\\n/gi, '\n'),
                 location: get('LOCATION').replace(/\\,/g, ','),
                 start,
                 end: parseIcalDate(get('DTEND'))
@@ -189,6 +361,8 @@
             if (loadingEl) loadingEl.hidden = true;
         }
     }
+
+    setupModal();
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadUpcoming);
